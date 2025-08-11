@@ -14,16 +14,16 @@ const LoadingSpinner = ({
 
   const spinner = (
     <div className={`text-center ${className}`}>
-      <div className={`animate-spin rounded-full border-b-2 border-blue-600 mx-auto mb-4 ${sizeClasses[size]}`}></div>
+      <div className={`animate-spin rounded-full border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4 ${sizeClasses[size]} transition-colors duration-500`}></div>
       {message && (
-        <p className="text-gray-600 font-medium">{message}</p>
+        <p className="text-gray-600 dark:text-gray-300 font-medium transition-colors duration-500">{message}</p>
       )}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-teal-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500">
         {spinner}
       </div>
     );

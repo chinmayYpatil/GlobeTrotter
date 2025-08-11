@@ -303,7 +303,7 @@ const ActivitySearch = () => {
         </motion.div>
 
         {/* Controls Bar */}
-        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             {/* Left Controls */}
             <div className="flex items-center space-x-4">
@@ -312,7 +312,7 @@ const ActivitySearch = () => {
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all ${
                   showFilters 
                     ? 'bg-blue-600 text-white shadow-lg' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <SlidersHorizontal className="h-4 w-4" />
@@ -322,7 +322,7 @@ const ActivitySearch = () => {
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -338,8 +338,8 @@ const ActivitySearch = () => {
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'grid' 
-                    ? 'bg-blue-100 text-blue-600' 
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
                 <Grid3X3 className="h-5 w-5" />
@@ -348,8 +348,8 @@ const ActivitySearch = () => {
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'list' 
-                    ? 'bg-blue-100 text-blue-600' 
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -364,16 +364,16 @@ const ActivitySearch = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-6 pt-6 border-t border-gray-100"
+                className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Activity Type */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Activity Type</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Activity Type</label>
                     <select
                       value={filters.type}
                       onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
                     >
                       {activityTypes.map(type => (
                         <option key={type.value} value={type.value}>
@@ -385,19 +385,19 @@ const ActivitySearch = () => {
 
                   {/* Max Cost */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Max Cost ($)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Max Cost ($)</label>
                     <input
                       type="number"
                       value={filters.maxCost}
                       onChange={(e) => setFilters({ ...filters, maxCost: e.target.value })}
                       placeholder="Any"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                     />
                   </div>
 
                   {/* Min Rating */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Min Rating</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Min Rating</label>
                     <input
                       type="number"
                       value={filters.minRating}
@@ -406,7 +406,7 @@ const ActivitySearch = () => {
                       step="0.1"
                       min="0"
                       max="5"
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                     />
                   </div>
 
@@ -414,7 +414,7 @@ const ActivitySearch = () => {
                   <div className="flex items-end">
                     <button
                       onClick={clearFilters}
-                      className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       Clear Filters
                     </button>
@@ -427,10 +427,10 @@ const ActivitySearch = () => {
 
         {/* Results Header */}
         <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
             Results ({filteredActivities.length})
           </h2>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
             Showing {filteredActivities.length} of {activities.length} activities
           </div>
         </motion.div>
@@ -443,7 +443,7 @@ const ActivitySearch = () => {
                 key={activity.id}
                 variants={itemVariants}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300"
+                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
               >
                 <div className="h-48 relative overflow-hidden group">
                   <img
@@ -455,7 +455,7 @@ const ActivitySearch = () => {
                   
                   {/* Activity Type Badge */}
                   <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800">
+                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
                       {activityTypes.find(t => t.value === activity.type)?.icon} {activity.type}
                     </span>
                   </div>
@@ -478,25 +478,25 @@ const ActivitySearch = () => {
                 </div>
                 
                 <div className="p-6">
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">{activity.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed transition-colors duration-500">{activity.description}</p>
                   
                   {/* Activity Details */}
                   <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                     <div className="flex items-center space-x-2">
                       <Clock className="h-4 w-4 text-blue-500" />
-                      <span className="text-gray-600">{activity.duration}h</span>
+                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.duration}h</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <DollarSign className="h-4 w-4 text-green-500" />
-                      <span className="text-gray-600">${activity.cost}</span>
+                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">${activity.cost}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Star className="h-4 w-4 text-yellow-500" />
-                      <span className="text-gray-600">{activity.rating}</span>
+                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.rating}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Users className="h-4 w-4 text-purple-500" />
-                      <span className="text-gray-600">{activity.groupSize}</span>
+                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.groupSize}</span>
                     </div>
                   </div>
                   
@@ -533,7 +533,7 @@ const ActivitySearch = () => {
                 key={activity.id}
                 variants={itemVariants}
                 whileHover={{ x: 4 }}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
+                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all"
               >
                 <div className="flex items-center space-x-6">
                   <img
@@ -545,10 +545,10 @@ const ActivitySearch = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-bold text-xl text-gray-900 mb-2">{activity.name}</h3>
-                        <p className="text-gray-600 mb-3">{activity.description}</p>
+                        <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2 transition-colors duration-500">{activity.name}</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mb-3 transition-colors duration-500">{activity.description}</p>
                         
-                        <div className="flex items-center space-x-6 text-sm text-gray-500">
+                        <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <div className="flex items-center space-x-2">
                             <Clock className="h-4 w-4 text-blue-500" />
                             <span>{activity.duration}h</span>
@@ -598,10 +598,10 @@ const ActivitySearch = () => {
 
         {/* No Results State */}
         {filteredActivities.length === 0 && (
-          <motion.div variants={itemVariants} className="bg-white rounded-3xl p-16 text-center border border-gray-200 shadow-lg">
+          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-3xl p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
             <div className="text-gray-400 text-8xl mb-6">🔍</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">No activities found</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">No activities found</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto transition-colors duration-500">
               Try adjusting your search criteria or filters to find more activities
             </p>
             <button 

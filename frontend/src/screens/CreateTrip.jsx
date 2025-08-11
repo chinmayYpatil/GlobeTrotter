@@ -118,18 +118,18 @@ const CreateTrip = () => {
         transition={{ duration: 0.5 }}
         className="max-w-2xl mx-auto"
       >
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-500">
           <div className="text-center mb-8">
             <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl flex items-center justify-center mb-4">
               <MapPin className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Your Trip</h1>
-            <p className="text-gray-600">Let's start planning your next adventure</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">Create Your Trip</h1>
+            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-500">Let's start planning your next adventure</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg transition-colors duration-500">
                     {error}
                 </div>
             )}
@@ -137,14 +137,14 @@ const CreateTrip = () => {
             {/* Trip Name and Budget */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Trip Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Trip Name *</label>
                     <div className="relative">
-                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                        <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., European Adventure" />
+                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5 transition-colors duration-500" />
+                        <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500" placeholder="e.g., European Adventure" />
                     </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Budget</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Total Budget</label>
                     <div className="space-y-2">
                         {/* Currency Selection */}
                         <div className="flex items-center space-x-2">
@@ -154,7 +154,7 @@ const CreateTrip = () => {
                                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
                                     formData.budget.currency === 'USD'
                                         ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
                             >
                                 USD
@@ -165,7 +165,7 @@ const CreateTrip = () => {
                                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
                                     formData.budget.currency === 'INR'
                                         ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
                             >
                                 INR
@@ -173,7 +173,7 @@ const CreateTrip = () => {
                             <button
                                 type="button"
                                 onClick={fetchExchangeRate}
-                                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                                className="p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
                                 title="Refresh exchange rate"
                             >
                                 <RefreshCw className="h-4 w-4" />
@@ -182,7 +182,7 @@ const CreateTrip = () => {
                         
                         {/* Budget Input */}
                         <div className="relative">
-                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm font-medium">
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm font-medium transition-colors duration-500">
                                 {formData.budget.currency === 'USD' ? '$' : '₹'}
                             </span>
                             <input 
@@ -190,7 +190,7 @@ const CreateTrip = () => {
                                 name="budget" 
                                 value={formData.budget.total} 
                                 onChange={handleChange} 
-                                className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" 
+                                className="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500" 
                                 placeholder={formData.budget.currency === 'USD' ? 'e.g., 2500' : 'e.g., 208750'} 
                                 min="0"
                                 step="0.01"
@@ -199,7 +199,7 @@ const CreateTrip = () => {
                         
                         {/* Converted Amount Display */}
                         {formData.budget.total && convertedAmount && (
-                            <div className="text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                            <div className="text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded-lg transition-colors duration-500">
                                 <span className="font-medium">
                                     {formatCurrency(formData.budget.total, formData.budget.currency)} = 
                                     {formData.budget.currency === 'USD' 
@@ -207,7 +207,7 @@ const CreateTrip = () => {
                                         : ` $${convertedAmount}`
                                     }
                                 </span>
-                                <div className="text-xs text-gray-500 mt-1">
+                                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors duration-500">
                                     Exchange Rate: 1 USD = ₹{exchangeRate.toFixed(2)}
                                 </div>
                             </div>
@@ -219,37 +219,37 @@ const CreateTrip = () => {
             {/* Date Range */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Start Date *</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input type="date" name="startDate" required value={formData.startDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5 transition-colors duration-500" />
+                  <input type="date" name="startDate" required value={formData.startDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">End Date *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">End Date *</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input type="date" name="endDate" required value={formData.endDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5 transition-colors duration-500" />
+                  <input type="date" name="endDate" required value={formData.endDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500" />
                 </div>
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} rows={4} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tell us about your trip..." />
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Description</label>
+              <textarea name="description" value={formData.description} onChange={handleChange} rows={4} className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500" placeholder="Tell us about your trip..." />
             </div>
 
             {/* Cover Image */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
-                <p className="text-sm text-gray-600 mb-3">Choose from suggestions:</p>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Cover Image</label>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-colors duration-500">Choose from suggestions:</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {suggestedImages.map((imageUrl, index) => (
                     <motion.button key={index} type="button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                         onClick={() => setFormData({ ...formData, coverImage: imageUrl })}
                         className={`relative aspect-video rounded-lg overflow-hidden border-2 transition-all ${
-                            formData.coverImage === imageUrl ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-200 hover:border-gray-300'
+                            formData.coverImage === imageUrl ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                         }`}
                     >
                         <img src={imageUrl} alt={`Suggestion ${index + 1}`} className="w-full h-full object-cover" />

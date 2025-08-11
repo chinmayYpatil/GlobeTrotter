@@ -99,7 +99,7 @@ const ProfileEdit = () => {
   return (
     <Layout title="Edit Profile" showBack={true} backTo="/profile">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden transition-colors duration-500">
           {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-teal-600 h-32 relative">
             <div className="absolute -bottom-16 left-8">
@@ -107,10 +107,10 @@ const ProfileEdit = () => {
                 <img
                   src={imagePreview || 'https://via.placeholder.com/150x150/3B82F6/FFFFFF?text=U'}
                   alt="Profile"
-                  className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                  className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-800 shadow-lg object-cover transition-colors duration-500"
                 />
-                <label className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-                  <Camera className="w-4 h-4 text-gray-600" />
+                <label className="absolute bottom-0 right-0 bg-white dark:bg-gray-700 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
+                  <Camera className="w-4 h-4 text-gray-600 dark:text-gray-300 transition-colors duration-500" />
                   <input
                     type="file"
                     accept="image/*"
@@ -127,20 +127,20 @@ const ProfileEdit = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Success/Error Messages */}
               {success && (
-                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                  <p className="text-green-600">{success}</p>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 transition-colors duration-500">
+                  <p className="text-green-600 dark:text-green-400 transition-colors duration-500">{success}</p>
                 </div>
               )}
               
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                  <p className="text-red-600">{error}</p>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 transition-colors duration-500">
+                  <p className="text-red-600 dark:text-red-400 transition-colors duration-500">{error}</p>
                 </div>
               )}
 
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">
                   Full Name
                 </label>
                 <input
@@ -149,7 +149,7 @@ const ProfileEdit = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   placeholder="Enter your full name"
                   required
                 />
@@ -157,7 +157,7 @@ const ProfileEdit = () => {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">
                   Email Address
                 </label>
                 <input
@@ -166,7 +166,7 @@ const ProfileEdit = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   placeholder="Enter your email address"
                   required
                 />
@@ -174,7 +174,7 @@ const ProfileEdit = () => {
 
               {/* Location Field */}
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">
                   Location
                 </label>
                 <input
@@ -183,14 +183,14 @@ const ProfileEdit = () => {
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   placeholder="Enter your location (city, country)"
                 />
               </div>
 
               {/* Bio Field */}
               <div>
-                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">
                   Bio
                 </label>
                 <textarea
@@ -199,7 +199,7 @@ const ProfileEdit = () => {
                   value={formData.bio}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   placeholder="Tell us a bit about yourself..."
                 />
               </div>
@@ -209,7 +209,7 @@ const ProfileEdit = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/profile')}
-                  className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   Cancel
                 </button>

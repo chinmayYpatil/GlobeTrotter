@@ -71,27 +71,27 @@ const BuildTripAI = () => {
   return (
     <Layout title="AI Trip Generator">
       {loading && <AIGenerationLoader />}
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-500">
         <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5">
           <h2 className="text-[3rem] text-[#ff7043] font-extrabold mb-5 uppercase text-center">
             Tell us your travel preferences 🏕️🌴
           </h2>
-          <p className="text-[#666] text-[1.2rem] mt-2 mb-10 max-w-[800px] leading-relaxed text-center mx-auto">
+          <p className="text-[#666] dark:text-gray-300 text-[1.2rem] mt-2 mb-10 max-w-[800px] leading-relaxed text-center mx-auto transition-colors duration-500">
             Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.
           </p>
         </div>
 
         {/* Destination Dropdown */}
         <div className="destination-select text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
             What is your choice of destination?
           </h3>
-          <div className="w-full mx-auto bg-gray-100 rounded-lg">
+          <div className="w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors duration-500">
             <select
               id="destination"
               value={formData.destination || ''}
               onChange={(e) => handleInputChange('destination', e.target.value)}
-              className="w-full p-3 mt-1 border-2 border-gray-300 rounded-lg text-base bg-white"
+              className="w-full p-3 mt-1 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
             >
               <option value="">Select a destination</option>
               <option value="Kutch">Kutch</option>
@@ -131,7 +131,7 @@ const BuildTripAI = () => {
           </div>
 
           {formData.destination && (
-            <p className="mt-4 text-lg text-green-600 font-medium">
+            <p className="mt-4 text-lg text-green-600 dark:text-green-400 font-medium transition-colors duration-500">
               Selected Destination: {formData.destination}
             </p>
           )}
@@ -139,15 +139,15 @@ const BuildTripAI = () => {
 
         {/* Days Input */}
         <div className="select-days text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
             How many days are you planning your trip?
           </h3>
-          <div className="w-full mx-auto bg-gray-100 rounded-lg">
+          <div className="w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors duration-500">
             <input
               type="text"
               id="day"
               placeholder="Ex., 3"
-              className="w-full p-3 mt-1 border-2 border-gray-300 rounded-lg text-base"
+              className="w-full p-3 mt-1 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
               onChange={(e) => handleInputChange('noOfDays', e.target.value)}
             />
           </div>
@@ -155,23 +155,23 @@ const BuildTripAI = () => {
 
         {/* Date Selection */}
         <div className="date-selection text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
             When are you planning to travel?
           </h3>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <div className="w-full md:w-48">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Start Date</label>
               <input
                 type="date"
-                className="w-full p-3 border-2 border-gray-300 rounded-lg text-base"
+                className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
                 onChange={(e) => handleInputChange('startDate', e.target.value)}
               />
             </div>
             <div className="w-full md:w-48">
-              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">End Date</label>
               <input
                 type="date"
-                className="w-full p-3 border-2 border-gray-300 rounded-lg text-base"
+                className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
                 onChange={(e) => handleInputChange('endDate', e.target.value)}
               />
             </div>
@@ -180,7 +180,7 @@ const BuildTripAI = () => {
 
         {/* Budget Selection */}
         <div className="budget my-10">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center transition-colors duration-500">
             What is your budget?
           </h3>
           <div className="flex justify-center gap-8 mt-5 flex-wrap">
@@ -190,7 +190,7 @@ const BuildTripAI = () => {
                 className={`p-6 w-[300px] text-center rounded-xl shadow-md cursor-pointer transition-all duration-300 hover:-translate-y-1 
                   ${formData?.budget === type
                     ? 'bg-orange-500 text-white border-3'
-                    : 'bg-white text-black hover:bg-orange-500 hover:text-white'}`}
+                    : 'bg-white dark:bg-gray-700 text-black dark:text-white hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white'}`}
                 onClick={() => handleInputChange('budget', type)}
               >
                 <h2 className="text-2xl">
@@ -211,7 +211,7 @@ const BuildTripAI = () => {
 
         {/* Travel Group Selection */}
         <div className="plan-to-travel my-10">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center transition-colors duration-500">
             Who do you plan on traveling with on your next adventure?
           </h3>
           <div className="flex justify-around flex-wrap gap-8">
@@ -226,7 +226,7 @@ const BuildTripAI = () => {
                 className={`p-6 w-[300px] text-center rounded-xl shadow-md cursor-pointer transition-all duration-300 hover:-translate-y-1 
                   ${formData?.traveler === opt.people
                     ? 'bg-green-500 text-white border-3'
-                    : 'bg-white text-black hover:bg-green-500 hover:text-white'}`}
+                    : 'bg-white dark:bg-gray-700 text-black dark:text-white hover:bg-green-500 hover:text-white dark:hover:bg-green-500 dark:hover:text-white'}`}
                 onClick={() => handleInputChange('traveler', opt.people)}
               >
                 <h2 className="text-2xl">{opt.icon}</h2>

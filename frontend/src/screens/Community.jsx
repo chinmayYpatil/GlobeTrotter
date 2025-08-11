@@ -425,7 +425,7 @@ const Community = () => {
         </motion.div>
 
         {/* Controls Bar */}
-        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             {/* Left Controls */}
             <div className="flex items-center space-x-4">
@@ -434,7 +434,7 @@ const Community = () => {
                 className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all ${
                   showFilters 
                     ? 'bg-purple-600 text-white shadow-lg' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <SlidersHorizontal className="h-4 w-4" />
@@ -444,7 +444,7 @@ const Community = () => {
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -460,8 +460,8 @@ const Community = () => {
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'grid' 
-                    ? 'bg-purple-100 text-purple-600' 
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' 
+                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
                 <Grid3X3 className="h-5 w-5" />
@@ -470,8 +470,8 @@ const Community = () => {
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${
                   viewMode === 'list' 
-                    ? 'bg-purple-100 text-purple-600' 
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' 
+                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
                 <List className="h-5 w-5" />
@@ -486,16 +486,16 @@ const Community = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-6 pt-6 border-t border-gray-100"
+                className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Category Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Category</label>
                     <select
                       value={filters.category}
                       onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
                     >
                       {categories.map(category => (
                         <option key={category.value} value={category.value}>
@@ -507,11 +507,11 @@ const Community = () => {
 
                   {/* Location Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Location</label>
                     <select
                       value={filters.location}
                       onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
                     >
                       <option value="all">All Locations</option>
                       <option value="Europe">Europe</option>
@@ -526,7 +526,7 @@ const Community = () => {
                   <div className="flex items-end">
                     <button
                       onClick={clearFilters}
-                      className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       Clear Filters
                     </button>
@@ -539,10 +539,10 @@ const Community = () => {
 
         {/* Results Header */}
         <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
             Community Experiences ({filteredPosts.length})
           </h2>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
             Showing {filteredPosts.length} of {posts.length} experiences
           </div>
         </motion.div>
@@ -555,7 +555,7 @@ const Community = () => {
                 key={post.id}
                 variants={itemVariants}
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => openEnlargedPost(post)}
               >
                 {/* Post Images */}
@@ -569,7 +569,7 @@ const Community = () => {
                   
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800">
+                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
                       {categories.find(c => c.value === post.category)?.icon} {post.category}
                     </span>
                   </div>
@@ -601,8 +601,8 @@ const Community = () => {
                       className="w-10 h-10 rounded-full object-cover"
                     />
                     <div>
-                      <h4 className="font-semibold text-gray-900">{post.user.name}</h4>
-                      <p className="text-sm text-gray-500 flex items-center">
+                      <h4 className="font-semibold text-gray-900 dark:text-white transition-colors duration-500">{post.user.name}</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center transition-colors duration-500">
                         <MapPin className="h-3 w-3 mr-1" />
                         {post.user.location}
                       </p>
@@ -610,12 +610,12 @@ const Community = () => {
                   </div>
 
                   {/* Post Content */}
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3 transition-colors duration-500">
                     {post.content}
                   </p>
                   
                   {/* Trip Details */}
-                  <div className="grid grid-cols-3 gap-3 mb-4 text-xs text-gray-500">
+                  <div className="grid grid-cols-3 gap-3 mb-4 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-3 w-3" />
                       <span>{post.trip.duration}</span>
@@ -635,7 +635,7 @@ const Community = () => {
                     {post.tags.slice(0, 3).map((tag, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full"
+                        className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
                       >
                         #{tag}
                       </span>
@@ -644,7 +644,7 @@ const Community = () => {
                   
                   {/* Action Buttons */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                       <button
                         onClick={(e) => { e.stopPropagation(); handleLike(post.id); }}
                         className="flex items-center space-x-1 hover:text-red-500 transition-colors"
@@ -667,7 +667,7 @@ const Community = () => {
                         <span>{post.shares}</span>
                       </button>
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
                       {post.createdAt}
                     </div>
                   </div>
@@ -683,7 +683,7 @@ const Community = () => {
                 key={post.id}
                 variants={itemVariants}
                 whileHover={{ x: 4 }}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all cursor-pointer"
                 onClick={() => openEnlargedPost(post)}
               >
                 <div className="flex items-start space-x-6">
@@ -705,17 +705,17 @@ const Community = () => {
                             className="w-8 h-8 rounded-full object-cover"
                           />
                           <div>
-                            <h4 className="font-semibold text-gray-900">{post.user.name}</h4>
-                            <p className="text-sm text-gray-500">{post.user.location}</p>
+                            <h4 className="font-semibold text-gray-900 dark:text-white transition-colors duration-500">{post.user.name}</h4>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">{post.user.location}</p>
                           </div>
                         </div>
 
                         {/* Trip Title */}
-                        <h3 className="font-bold text-xl text-gray-900 mb-2">{post.trip.name}</h3>
-                        <p className="text-gray-600 mb-3">{post.content}</p>
+                        <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2 transition-colors duration-500">{post.trip.name}</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mb-3 transition-colors duration-500">{post.content}</p>
                         
                         {/* Trip Details */}
-                        <div className="flex items-center space-x-6 text-sm text-gray-500 mb-3">
+                        <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <div className="flex items-center space-x-2">
                             <MapPin className="h-4 w-4" />
                             <span>{post.trip.location}</span>
@@ -739,7 +739,7 @@ const Community = () => {
                           {post.tags.slice(0, 4).map((tag, index) => (
                             <span
                               key={index}
-                              className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full"
+                              className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
                             >
                               #{tag}
                             </span>
@@ -749,7 +749,7 @@ const Community = () => {
                       
                       {/* Action Buttons */}
                       <div className="flex flex-col items-end space-y-3">
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <button
                             onClick={(e) => { e.stopPropagation(); handleLike(post.id); }}
                             className="flex items-center space-x-1 hover:text-red-500 transition-colors"
@@ -772,7 +772,7 @@ const Community = () => {
                             <span>{post.shares}</span>
                           </button>
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
                           {post.createdAt}
                         </div>
                       </div>
@@ -786,10 +786,10 @@ const Community = () => {
 
         {/* No Results State */}
         {filteredPosts.length === 0 && (
-          <motion.div variants={itemVariants} className="bg-white rounded-3xl p-16 text-center border border-gray-200 shadow-lg">
+          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-3xl p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
             <div className="text-gray-400 text-8xl mb-6">🌍</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">No experiences found</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">No experiences found</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto transition-colors duration-500">
               Try adjusting your search criteria or filters to find more community experiences
             </p>
             <button 

@@ -4,7 +4,7 @@ import { Sparkles, Loader2 } from 'lucide-react';
 const AIGenerationLoader = ({ message = "Generating your perfect trip..." }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl p-8 shadow-2xl max-w-md mx-4 text-center">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl max-w-md mx-4 text-center transition-colors duration-500">
         <div className="flex justify-center mb-4">
           <div className="relative">
             <Sparkles className="w-12 h-12 text-purple-500 animate-pulse" />
@@ -12,11 +12,11 @@ const AIGenerationLoader = ({ message = "Generating your perfect trip..." }) => 
           </div>
         </div>
         
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2 transition-colors duration-500">
           AI Trip Generation
         </h3>
         
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-500">
           {message}
         </p>
         
@@ -26,7 +26,7 @@ const AIGenerationLoader = ({ message = "Generating your perfect trip..." }) => 
           <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
         </div>
         
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 transition-colors duration-500">
           This may take a few moments...
         </p>
       </div>

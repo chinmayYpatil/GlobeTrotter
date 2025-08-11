@@ -44,7 +44,7 @@ const TripPlanningModal = ({ isOpen, onClose }) => {
       
       {/* Modal Content */}
       <div 
-        className={`relative bg-white rounded-3xl shadow-2xl p-8 transform transition-all duration-300 ${
+        className={`relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 transform transition-all duration-300 ${
           isAnimating 
             ? 'scale-100 opacity-100 translate-y-0' 
             : 'scale-95 opacity-0 translate-y-4'
@@ -53,16 +53,16 @@ const TripPlanningModal = ({ isOpen, onClose }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors"
         >
-          <X className="w-5 h-5 text-gray-600" />
+          <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
 
         {/* Options */}
         <div className="space-y-6 mt-4">
           {/* Create a trip option */}
           <div 
-            className={`flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+            className={`flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
               isAnimating ? 'animate-slideInUp' : ''
             }`}
             style={{ 
@@ -71,15 +71,15 @@ const TripPlanningModal = ({ isOpen, onClose }) => {
             }}
             onClick={() => handleOptionClick('create')}
           >
-            <span className="text-lg font-semibold text-gray-800">Create a trip</span>
-            <div className="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
-              <Plus className="w-6 h-6 text-green-600" />
+            <span className="text-lg font-semibold text-gray-800 dark:text-white transition-colors duration-500">Create a trip</span>
+            <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+              <Plus className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
           </div>
 
           {/* Build a trip with AI option */}
           <div 
-            className={`flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 hover:border-purple-300 hover:bg-purple-50 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+            className={`flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
               isAnimating ? 'animate-slideInUp' : ''
             }`}
             style={{ 
@@ -88,11 +88,11 @@ const TripPlanningModal = ({ isOpen, onClose }) => {
             }}
             onClick={() => handleOptionClick('ai')}
           >
-            <span className="text-lg font-semibold text-gray-800">Build a trip with AI</span>
-            <div className="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+            <span className="text-lg font-semibold text-gray-800 dark:text-white transition-colors duration-500">Build a trip with AI</span>
+            <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-green-600 rounded-full transform rotate-45 animate-pulse"></div>
-                <div className="w-2 h-2 bg-green-600 rounded-full transform -rotate-45 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-2 h-2 bg-green-600 dark:bg-green-400 rounded-full transform rotate-45 animate-pulse"></div>
+                <div className="w-2 h-2 bg-green-600 dark:bg-green-400 rounded-full transform -rotate-45 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
               </div>
             </div>
           </div>
