@@ -35,6 +35,10 @@ const Trip = sequelize.define('Trip', {
         type: DataTypes.STRING,
         unique: true,
     },
+    userEmail: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
 });
 
 // Define the Relationship

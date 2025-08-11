@@ -8,8 +8,9 @@ export const createTrip = async (req, res) => {
     try {
         // Get trip details from the request body
         const { name, description, coverImage, startDate, endDate, budget } = req.body;
-        // Get the user ID from the authenticated user session
+        // Get the user ID and email from the authenticated user session
         const userId = req.user.id;
+        const userEmail = req.user.email;
 
         if (!name || !startDate || !endDate) {
             return res.status(400).json({ message: 'Please provide a name, start date, and end date' });
@@ -21,8 +22,9 @@ export const createTrip = async (req, res) => {
             coverImage,
             startDate,
             endDate,
-            budget,
+            budget: JSON.stringify(budget), // Correctly stringify the budget object
             userId, // Link the trip to the logged-in user
+            userEmail, // Add the user's email
             shareId: randomBytes(8).toString('hex') // Generate a random shareable ID
         });
 
@@ -42,4 +44,4 @@ export const getUserTrips = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};

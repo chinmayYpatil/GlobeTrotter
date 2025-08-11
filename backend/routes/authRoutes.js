@@ -1,6 +1,15 @@
 import express from "express";
 import passport from "passport";
-import { googleCallback, logoutUser, registerUser, loginUser, getCurrentUser } from "../controllers/authController.js";
+import { 
+    googleCallback, 
+    logoutUser, 
+    registerUser, 
+    loginUser, 
+    getCurrentUser,
+    updateUserProfile,
+    uploadAvatar // Import the new controller function
+} from "../controllers/authController.js";
+import { ensureAuth } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -8,7 +17,12 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);
+
+// Profile routes
 router.get("/me", getCurrentUser);
+router.put("/profile", ensureAuth, updateUserProfile);
+// Add the new route for avatar uploads
+router.post("/upload-avatar", ensureAuth, uploadAvatar); 
 
 // Google OAuth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

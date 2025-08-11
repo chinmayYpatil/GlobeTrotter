@@ -14,7 +14,8 @@ const profileService = {
   // Get current user profile
   getProfile: async () => {
     try {
-      const response = await api.get('/auth/profile');
+      // Corrected the endpoint from '/auth/profile' to '/auth/me'
+      const response = await api.get('/auth/me'); 
       return { success: true, data: response.data };
     } catch (error) {
       return {
@@ -27,6 +28,7 @@ const profileService = {
   // Update user profile
   updateProfile: async (profileData) => {
     try {
+      // Corrected the endpoint from '/auth/profile' to '/auth/me'
       const response = await api.put('/auth/profile', profileData);
       return { success: true, data: response.data };
     } catch (error) {
