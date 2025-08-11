@@ -17,7 +17,7 @@ import { format } from 'date-fns';
 const ItineraryBuilder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getTripById, updateTrip, addStopToTrip, updateTripStop, deleteStopFromTrip, cities, activities } = useTrips();
+  const { getTripById, addStopToTrip, updateTripStop, deleteStopFromTrip, cities, activities } = useTrips();
   
   const trip = getTripById(id);
   const [editingStop, setEditingStop] = useState(null);
@@ -30,11 +30,24 @@ const ItineraryBuilder = () => {
 
   useEffect(() => {
     if (!trip) {
-      navigate('/my-trips');
+      // Small delay to allow trips to load in context
+      setTimeout(() => {
+        if (!getTripById(id)) {
+          navigate('/my-trips');
+        }
+      }, 500);
     }
-  }, [trip, navigate]);
+  }, [id, trip, getTripById, navigate]);
 
-  if (!trip) return null;
+  if (!trip) {
+     return (
+      <Layout title="Loading Itinerary...">
+        <div className="flex justify-center items-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   const handleAddStop = () => {
     if (newStop.cityId && newStop.startDate && newStop.endDate) {
@@ -106,11 +119,13 @@ const ItineraryBuilder = () => {
             </div>
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-2" />
-              <span>{trip.stops.length} stops</span>
+              {/* Fix: Safely access stops length */}
+              <span>{trip.stops?.length || 0} stops</span>
             </div>
             <div className="flex items-center">
               <DollarSign className="h-4 w-4 mr-2" />
-              <span>${trip.budget.total} budget</span>
+              {/* Fix: Safely access budget */}
+              <span>${trip.budget?.total || 0} budget</span>
             </div>
           </div>
         </motion.div>
@@ -159,7 +174,8 @@ const ItineraryBuilder = () => {
 
         {/* Trip Stops */}
         <div className="space-y-6">
-          {trip.stops.length > 0 ? (
+          {/* Fix: Check for stops before mapping */}
+          {trip.stops && trip.stops.length > 0 ? (
             trip.stops.map((stop, index) => {
               const city = getStopCity(stop.cityId);
               if (!city) return null;
