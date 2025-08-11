@@ -1,150 +1,220 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useTrips } from '../contexts/TripContext';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
-import { Plus, MapPin, Calendar, DollarSign, Sparkles } from 'lucide-react';
-import { format } from 'date-fns';
+import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { trips, cities } = useTrips();
+  const { trips, cities, searchCities } = useTrips();
   const { user } = useAuth();
 
-  const upcomingTrips = trips.filter(trip => new Date(trip.startDate) >= new Date()).slice(0, 3);
-  const popularCities = cities.slice(0, 6);
+  const previousTrips = trips.filter(trip => new Date(trip.startDate) < new Date()).slice(0, 3);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  // Controls state
+  const [query, setQuery] = useState('');
+  const [priceBand, setPriceBand] = useState('all'); // all | budget | mid | luxury
+  const [sortBy, setSortBy] = useState('popularity_desc'); // name_asc | popularity_desc | cost_asc | cost_desc
+
+  // Derived cities based on search/filter/sort
+  const filteredAndSorted = useMemo(() => {
+    let list = searchCities ? searchCities(query) : cities;
+
+    if (priceBand !== 'all') {
+      list = list.filter(c => {
+        if (priceBand === 'budget') return c.costIndex <= 60;
+        if (priceBand === 'mid') return c.costIndex > 60 && c.costIndex <= 80;
+        return c.costIndex > 80; // luxury
+      });
     }
+
+    const listCopy = [...list];
+    switch (sortBy) {
+      case 'name_asc':
+        listCopy.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'cost_asc':
+        listCopy.sort((a, b) => a.costIndex - b.costIndex);
+        break;
+      case 'cost_desc':
+        listCopy.sort((a, b) => b.costIndex - a.costIndex);
+        break;
+      default:
+        listCopy.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0));
+    }
+
+    return listCopy;
+  }, [cities, query, priceBand, sortBy, searchCities]);
+
+  // Horizontal auto-infinite carousel for Top Regions
+  const carouselRef = useRef(null);
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const duplicatedList = useMemo(() => [...filteredAndSorted, ...filteredAndSorted], [filteredAndSorted]);
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+
+    let rafId;
+    const speedPxPerFrame = 0.7;
+
+    const step = () => {
+      if (!isAutoScroll) {
+        rafId = requestAnimationFrame(step);
+        return;
+      }
+      el.scrollLeft += speedPxPerFrame;
+      const half = el.scrollWidth / 2;
+      if (el.scrollLeft >= half) {
+        el.scrollLeft -= half;
+      }
+      rafId = requestAnimationFrame(step);
+    };
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [duplicatedList, isAutoScroll]);
+
+  const scrollBy = (delta) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    el.scrollBy({ left: delta, behavior: 'smooth' });
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+  const handlePrev = () => {
+    const width = carouselRef.current?.clientWidth || 600;
+    scrollBy(-Math.floor(width * 0.9));
+  };
+  const handleNext = () => {
+    const width = carouselRef.current?.clientWidth || 600;
+    scrollBy(Math.floor(width * 0.9));
   };
 
   return (
     <Layout title="Dashboard">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="space-y-8"
-      >
-        {/* Welcome Section */}
-        <motion.div variants={itemVariants} className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl p-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name}!</h1>
-              <p className="text-blue-100 text-lg">Ready to plan your next adventure?</p>
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/create-trip')}
-              className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 hover:shadow-lg transition-all"
+      {/* Banner */}
+      <div className="rounded-3xl overflow-hidden shadow-xl mb-6 h-56 md:h-72 flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
+        <span className="text-4xl md:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider">Banner Image</span>
+      </div>
+
+      {/* Search and Controls */}
+      <div className="flex flex-col md:flex-row items-center gap-3 mb-8">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search bar ......"
+          className="flex-1 rounded-xl px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-gray-800 shadow"
+        />
+        <div className="flex gap-2 w-full md:w-auto">
+          <select
+            value={priceBand}
+            onChange={(e) => setPriceBand(e.target.value)}
+            className="px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 shadow text-gray-700 font-medium"
+          >
+            <option value="all">Filter: All budgets</option>
+            <option value="budget">Filter: Budget (&lt;=60)</option>
+            <option value="mid">Filter: Mid (61-80)</option>
+            <option value="luxury">Filter: Luxury (&gt;80)</option>
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 shadow text-gray-700 font-medium"
+          >
+            <option value="popularity_desc">Sort by: Popularity</option>
+            <option value="name_asc">Sort by: Name (A-Z)</option>
+            <option value="cost_asc">Sort by: Cost (Low-High)</option>
+            <option value="cost_desc">Sort by: Cost (High-Low)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Top Regional Selections - horizontal auto-infinite carousel with side arrows */}
+      <div className="mb-10">
+        <h2 className="text-xl md:text-2xl font-bold text-blue-900 tracking-wide mb-3">Top Regional Selections</h2>
+
+        {filteredAndSorted.length === 0 ? (
+          <div className="rounded-2xl bg-white/60 p-8 border border-gray-200 text-center text-gray-600">
+            No destinations match your filters.
+          </div>
+        ) : (
+          <div
+            className="relative group"
+            onMouseEnter={() => setIsAutoScroll(false)}
+            onMouseLeave={() => setIsAutoScroll(true)}
+          >
+            <div
+              ref={carouselRef}
+              className="rounded-2xl bg-white/60 p-4 border border-gray-200 overflow-hidden"
             >
-              <Plus className="h-5 w-5" />
-              <span>Plan New Trip</span>
-            </motion.button>
-          </div>
-        </motion.div>
+              <div className="flex gap-4 w-max">
+                {duplicatedList.map((region, idx) => (
+                  <div
+                    key={`${region.id}-${idx}`}
+                    className="w-56 flex-shrink-0 bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden border border-gray-200 cursor-pointer transition-transform hover:-translate-y-0.5"
+                  >
+                    <img src={region.image} alt={region.name} className="w-full h-36 object-cover" />
+                    <div className="p-3">
+                      <div className="font-semibold text-gray-900 truncate">{region.name}</div>
+                      <div className="text-xs text-gray-500">{region.country}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        {/* Quick Stats */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center space-x-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <MapPin className="h-6 w-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{trips.length}</p>
-                <p className="text-gray-600">Total Trips</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center space-x-4">
-              <div className="p-3 bg-teal-100 rounded-lg">
-                <Calendar className="h-6 w-6 text-teal-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{upcomingTrips.length}</p>
-                <p className="text-gray-600">Upcoming</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center space-x-4">
-              <div className="p-3 bg-orange-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-orange-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  ${trips.reduce((sum, trip) => sum + trip.budget.total, 0)}
-                </p>
-                <p className="text-gray-600">Total Budget</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Upcoming Trips */}
-        <motion.div variants={itemVariants}>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Upcoming Trips</h2>
+            {/* Side arrows */}
             <button
-              onClick={() => navigate('/my-trips')}
-              className="text-blue-600 hover:text-blue-500 font-medium"
+              onClick={handlePrev}
+              aria-label="Scroll left"
+              className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              View all
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleNext}
+              aria-label="Scroll right"
+              className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
-          
-          {upcomingTrips.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingTrips.map((trip, index) => (
-                <motion.div
-                  key={trip.id}
-                  variants={itemVariants}
-                  whileHover={{ y: -5 }}
-                  onClick={() => navigate(`/trip/${trip.id}/view`)}
-                  className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 cursor-pointer hover:shadow-lg transition-all"
-                >
-                  <div className="h-48 bg-gradient-to-r from-blue-400 to-teal-400 relative overflow-hidden">
-                    {trip.coverImage && (
-                      <img
-                        src={trip.coverImage}
-                        alt={trip.name}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-                    <div className="absolute bottom-4 left-4">
-                      <h3 className="text-white font-bold text-xl">{trip.name}</h3>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 mb-4 line-clamp-2">{trip.description}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{format(new Date(trip.startDate), 'MMM dd')} - {format(new Date(trip.endDate), 'MMM dd')}</span>
-                      <span>${trip.budget.total}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+        )}
+      </div>
+
+      {/* Previous Trips */}
+      <div className="mb-24">
+        <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-4 tracking-wide">Previous Trips</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {previousTrips.length > 0 ? previousTrips.map(trip => (
+            <div
+              key={trip.id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 cursor-pointer hover:shadow-2xl transition-shadow"
+              onClick={() => navigate(`/trip/${trip.id}/view`)}
+            >
+              <div className="h-36 bg-gradient-to-r from-blue-400 to-teal-400 relative overflow-hidden">
+                {trip.coverImage && (
+                  <img src={trip.coverImage} alt={trip.name} className="w-full h-full object-cover" />
+                )}
+                <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+                <div className="absolute bottom-3 left-3">
+                  <h3 className="text-white font-bold text-lg">{trip.name}</h3>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="text-gray-600 mb-2 line-clamp-2 text-sm">{trip.description}</div>
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span>{trip.startDate} - {trip.endDate}</span>
+                  <span>${trip.budget.total}</span>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
-              <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4">No upcoming trips planned yet</p>
+          )) : (
+            <div className="col-span-full bg-white rounded-2xl p-12 text-center border border-gray-200">
+              <span className="block text-gray-400 text-3xl mb-4">🗺️</span>
+              <p className="text-gray-600 mb-4">No previous trips found</p>
               <button
                 onClick={() => navigate('/create-trip')}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
@@ -153,40 +223,16 @@ const Dashboard = () => {
               </button>
             </div>
           )}
-        </motion.div>
+        </div>
+      </div>
 
-        {/* Popular Destinations */}
-        <motion.div variants={itemVariants}>
-          <div className="flex items-center space-x-2 mb-6">
-            <Sparkles className="h-6 w-6 text-yellow-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Popular Destinations</h2>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {popularCities.map((city, index) => (
-              <motion.div
-                key={city.id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 cursor-pointer hover:shadow-lg transition-all"
-              >
-                <div className="aspect-square relative overflow-hidden">
-                  <img
-                    src={city.image}
-                    alt={city.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <h3 className="text-white font-semibold text-sm">{city.name}</h3>
-                    <p className="text-white/80 text-xs">{city.country}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
+      {/* Floating Plan a Trip Button */}
+      <button
+        onClick={() => navigate('/create-trip')}
+        className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-2 text-lg font-semibold hover:bg-blue-700 transition-all"
+      >
+        <Plus className="w-6 h-6" /> Plan a trip
+      </button>
     </Layout>
   );
 };
