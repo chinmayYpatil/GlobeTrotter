@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { ArrowLeft, User, LogOut, Loader2, Search, MapPin, Plus, Calendar, Home, Menu, X } from 'lucide-react';
+import { ArrowLeft, User, LogOut, Loader2, Search, MapPin, Plus, Calendar, Home, Menu, X, Globe } from 'lucide-react';
 import { useNavigation } from '../hooks/useNavigation';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -35,7 +35,7 @@ const Layout = ({ children, title, showBack = false, backTo = '/' }) => {
     { name: 'My Trips', path: '/my-trips', icon: Calendar },
     { name: 'Create Trip', path: '/create-trip', icon: Plus },
     { name: 'Activity Search', path: '/activity-search', icon: Search },
-    { name: 'City Search', path: '/city-search', icon: MapPin },
+    { name: 'Community', path: '/community', icon: Globe },
   ];
 
   const handleNavigation = (path) => {

@@ -21,6 +21,7 @@ const ActivitySearch = lazy(() => import('./screens/ActivitySearch'));
 const TripBudget = lazy(() => import('./screens/TripBudget'));
 const TripCalendar = lazy(() => import('./screens/TripCalendar'));
 const SharedItinerary = lazy(() => import('./screens/SharedItinerary'));
+const Community = lazy(() => import('./screens/Community'));
 
 // Error boundary component
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
@@ -87,6 +88,9 @@ function App() {
                     {/* Standalone Search Routes */}
                     <Route path="/activity-search" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
                     <Route path="/city-search" element={<ProtectedRoute><CitySearch /></ProtectedRoute>} />
+                    
+                    {/* Community Route */}
+                    <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
                     
                     {/* Public Route */}
                     <Route path="/shared/:shareId" element={<SharedItinerary />} />
