@@ -84,6 +84,10 @@ function App() {
                     <Route path="/trip/:id/budget" element={<ProtectedRoute><TripBudget /></ProtectedRoute>} />
                     <Route path="/trip/:id/calendar" element={<ProtectedRoute><TripCalendar /></ProtectedRoute>} />
                     
+                    {/* Standalone Search Routes */}
+                    <Route path="/activity-search" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
+                    <Route path="/city-search" element={<ProtectedRoute><CitySearch /></ProtectedRoute>} />
+                    
                     {/* Public Route */}
                     <Route path="/shared/:shareId" element={<SharedItinerary />} />
                   </Routes>
