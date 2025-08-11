@@ -16,7 +16,6 @@ import './models/tripModel.js';
 import City from './models/cityModel.js'; // Import the City model
 
 // Route and Config imports
-import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import tripRoutes from './routes/tripRoutes.js';
@@ -31,7 +30,7 @@ const startServer = async () => {
         await sequelize.authenticate();
         console.log('Database connection has been established successfully.');
         
-        await sequelize.sync({ force: true });
+        await sequelize.sync({});
         console.log('All models were synchronized successfully.');
 
         // Seed the database
@@ -65,7 +64,6 @@ const startServer = async () => {
         app.use(passport.initialize());
         app.use(passport.session());
 
-        app.use('/api/products', productRoutes);
         app.use('/auth', authRoutes);
         app.use('/api/dashboard', dashboardRoutes);
         app.use('/api/trips', tripRoutes);

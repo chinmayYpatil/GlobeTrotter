@@ -6,7 +6,7 @@ export const getDashboardData = async (req, res) => {
     try {
         const welcomeMessage = `Welcome back, ${req.user.firstName || req.user.displayName}!`;
 
-        const previousTrips = await Trip.findAll({
+        let previousTrips = await Trip.findAll({
             where: {
                 userId: req.user.id,
                 startDate: {
@@ -16,6 +16,15 @@ export const getDashboardData = async (req, res) => {
             limit: 3,
             order: [['startDate', 'DESC']],
         });
+
+        // Ensure budget is parsed
+        previousTrips = previousTrips.map(trip => {
+            if (typeof trip.budget === 'string') {
+                trip.budget = JSON.parse(trip.budget);
+            }
+            return trip;
+        });
+
 
         const topRegions = await City.findAll({
             order: [['popularity', 'DESC']],

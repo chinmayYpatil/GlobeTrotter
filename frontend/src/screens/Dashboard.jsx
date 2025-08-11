@@ -244,8 +244,9 @@ const Dashboard = () => {
                 <div className="text-gray-600 mb-2 line-clamp-2 text-sm">{trip.description || 'No description.'}</div>
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
-                  <span>${trip.budget}</span>
-                </div>
+
+                 <span>${trip.budget.total}</span>
+                 </div>
               </div>
             </div>
           )) : (
