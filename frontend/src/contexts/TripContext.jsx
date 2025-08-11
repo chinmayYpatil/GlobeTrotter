@@ -54,6 +54,22 @@ export const TripProvider = ({ children }) => {
   const getTripById = (tripId) => {
     return trips.find(trip => trip.id.toString() === tripId);
   };
+
+  //to add the stop to the create trip page
+  const addStopToTrip = (tripId, stop) => {
+  setTrips(prevTrips =>
+    prevTrips.map(trip =>
+      String(trip.id) === String(tripId)
+        ? {
+            ...trip,
+            stops: [...(trip.stops || []), { id: Date.now().toString(), ...stop }]
+          }
+        : trip
+      )
+    );
+  };
+
+
   
   // This can remain as is for now
   const getTripByShareId = (shareId) => {
@@ -74,6 +90,7 @@ export const TripProvider = ({ children }) => {
     cities,
     activities,
     createTrip,
+    addStopToTrip,
     getTripById,
     getTripByShareId,
     searchCities,

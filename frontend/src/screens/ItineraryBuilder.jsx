@@ -106,7 +106,7 @@ const ItineraryBuilder = () => {
             </div>
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-2" />
-              <span>{trip.stops.length} stops</span>
+              <span>{trip.stops?.length || 0} stops</span>
             </div>
             <div className="flex items-center">
               <DollarSign className="h-4 w-4 mr-2" />
@@ -159,7 +159,7 @@ const ItineraryBuilder = () => {
 
         {/* Trip Stops */}
         <div className="space-y-6">
-          {trip.stops.length > 0 ? (
+          {trip.stops?.length > 0 ? (
             trip.stops.map((stop, index) => {
               const city = getStopCity(stop.cityId);
               if (!city) return null;
