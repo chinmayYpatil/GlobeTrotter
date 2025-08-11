@@ -71,6 +71,14 @@ const MyTrips = () => {
       >
         {/* Header Actions */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => navigate('/profile')}
+              className="bg-white text-blue-600 px-4 py-2 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors flex items-center space-x-2"
+            >
+              <span>Profile</span>
+            </button>
+          </div>
           <div className="flex items-center space-x-4 flex-1 max-w-lg">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />

@@ -36,6 +36,45 @@ const tripService = {
       };
     }
   },
+
+  // Get trip by ID
+  getTripById: async (tripId) => {
+    try {
+      const response = await api.get(`/trips/${tripId}`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Failed to fetch trip',
+      };
+    }
+  },
+
+  // Update trip
+  updateTrip: async (tripId, tripData) => {
+    try {
+      const response = await api.put(`/trips/${tripId}`, tripData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Failed to update trip',
+      };
+    }
+  },
+
+  // Delete trip
+  deleteTrip: async (tripId) => {
+    try {
+      const response = await api.delete(`/trips/${tripId}`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Failed to delete trip',
+      };
+    }
+  },
 };
 
 export default tripService;

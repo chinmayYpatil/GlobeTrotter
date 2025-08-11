@@ -59,7 +59,7 @@ export const loginUser = (req, res, next) => {
 
 export const googleCallback = (req, res) => {
     // Redirects to a frontend route that will then fetch user data
-    res.redirect("http://localhost:5173/dashboard"); 
+    res.redirect("http://localhost:5173"); 
 };
 
 export const logoutUser = (req, res, next) => {

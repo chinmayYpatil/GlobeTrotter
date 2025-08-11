@@ -130,7 +130,15 @@ const Dashboard = () => {
 
   return (
     <Layout title="Dashboard">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">{welcomeMessage}</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-gray-800">{welcomeMessage}</h1>
+        <button 
+          onClick={() => navigate('/profile')}
+          className="bg-white text-blue-600 px-4 py-2 rounded-xl border border-blue-200 hover:bg-blue-50 transition-colors flex items-center space-x-2"
+        >
+          <span>View Profile</span>
+        </button>
+      </div>
 
       <div className="rounded-3xl overflow-hidden shadow-xl mb-6 h-56 md:h-72 flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
         <span className="text-4xl md:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider">Your Adventure Awaits</span>
