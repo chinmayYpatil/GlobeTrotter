@@ -8,9 +8,15 @@ const Trip = sequelize.define('Trip', {
         autoIncrement: true,
         primaryKey: true,
     },
-    destination: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    description: {
+        type: DataTypes.TEXT,
+    },
+    coverImage: {
+        type: DataTypes.STRING,
     },
     startDate: {
         type: DataTypes.DATEONLY,
@@ -21,10 +27,13 @@ const Trip = sequelize.define('Trip', {
         allowNull: false,
     },
     budget: {
-        type: DataTypes.DECIMAL(10, 2),
+        type: DataTypes.JSONB,
+        // The defaultValue needs to be a string for the database
+        defaultValue: '{"total":0,"breakdown":{}}', 
     },
-    notes: {
-        type: DataTypes.TEXT,
+    shareId: {
+        type: DataTypes.STRING,
+        unique: true,
     },
 });
 

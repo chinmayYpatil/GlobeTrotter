@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTrips } from '../contexts/TripContext';
 import Layout from '../components/Layout';
-import { Camera, Calendar, FileText, MapPin } from 'lucide-react';
+import { Camera, Calendar, FileText, MapPin, DollarSign } from 'lucide-react';
 
 const CreateTrip = () => {
   const navigate = useNavigate();
@@ -13,28 +13,38 @@ const CreateTrip = () => {
     startDate: '',
     endDate: '',
     description: '',
-    coverImage: ''
+    coverImage: '',
+    budget: { total: 0 } // Add budget to form state
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
 
     try {
-      const newTrip = createTrip(formData);
+      const newTrip = await createTrip({
+        ...formData,
+        budget: { total: Number(formData.budget.total) || 0 }
+      });
       navigate(`/trip/${newTrip.id}/build`);
-    } catch (error) {
-      console.error('Error creating trip:', error);
-    } finally {
+    } catch (err) {
+      setError(err.message || 'Failed to create trip. Please try again.');
       setLoading(false);
     }
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'budget') {
+      setFormData({ ...formData, budget: { total: value } });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
-
+  
   const suggestedImages = [
     'https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=800',
     'https://images.pexels.com/photos/1440476/pexels-photo-1440476.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -60,140 +70,75 @@ const CreateTrip = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Trip Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Trip Name *
-              </label>
-              <div className="relative">
-                <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  placeholder="e.g., European Adventure"
-                />
-              </div>
+            {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                    {error}
+                </div>
+            )}
+            
+            {/* Trip Name and Budget */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Trip Name *</label>
+                    <div className="relative">
+                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                        <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., European Adventure" />
+                    </div>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Budget ($)</label>
+                    <div className="relative">
+                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                        <input type="number" name="budget" value={formData.budget.total} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., 2500" />
+                    </div>
+                </div>
             </div>
 
             {/* Date Range */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Start Date *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date *</label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input
-                    type="date"
-                    name="startDate"
-                    required
-                    value={formData.startDate}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  />
+                  <input type="date" name="startDate" required value={formData.startDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  End Date *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">End Date *</label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input
-                    type="date"
-                    name="endDate"
-                    required
-                    value={formData.endDate}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                  />
+                  <input type="date" name="endDate" required value={formData.endDate} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
                 </div>
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                placeholder="Tell us about your trip..."
-              />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea name="description" value={formData.description} onChange={handleChange} rows={4} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tell us about your trip..." />
             </div>
 
             {/* Cover Image */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cover Image
-              </label>
-              <div className="space-y-4">
-                <div className="relative">
-                  <Camera className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input
-                    type="url"
-                    name="coverImage"
-                    value={formData.coverImage}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Image URL (optional)"
-                  />
-                </div>
-                
-                <div>
-                  <p className="text-sm text-gray-600 mb-3">Or choose from suggestions:</p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {suggestedImages.map((imageUrl, index) => (
-                      <motion.button
-                        key={index}
-                        type="button"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                <label className="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+                <p className="text-sm text-gray-600 mb-3">Choose from suggestions:</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {suggestedImages.map((imageUrl, index) => (
+                    <motion.button key={index} type="button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                         onClick={() => setFormData({ ...formData, coverImage: imageUrl })}
                         className={`relative aspect-video rounded-lg overflow-hidden border-2 transition-all ${
-                          formData.coverImage === imageUrl 
-                            ? 'border-blue-500 ring-2 ring-blue-500 ring-opacity-50' 
-                            : 'border-gray-200 hover:border-gray-300'
+                            formData.coverImage === imageUrl ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-200 hover:border-gray-300'
                         }`}
-                      >
-                        <img
-                          src={imageUrl}
-                          alt={`Suggestion ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </motion.button>
-                    ))}
-                  </div>
+                    >
+                        <img src={imageUrl} alt={`Suggestion ${index + 1}`} className="w-full h-full object-cover" />
+                    </motion.button>
+                ))}
                 </div>
-
-                {formData.coverImage && (
-                  <div className="mt-4">
-                    <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                    <div className="aspect-video rounded-lg overflow-hidden border border-gray-200">
-                      <img
-                        src={formData.coverImage}
-                        alt="Cover preview"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading}
+              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              type="submit" disabled={loading}
               className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-4 px-6 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all disabled:opacity-50"
             >
               {loading ? 'Creating Trip...' : 'Create Trip & Start Planning'}
