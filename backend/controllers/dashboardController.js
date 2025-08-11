@@ -1,35 +1,32 @@
 import Trip from '../models/tripModel.js';
+import City from '../models/cityModel.js';
+import { Op } from 'sequelize';
 
 export const getDashboardData = async (req, res) => {
     try {
         const welcomeMessage = `Welcome back, ${req.user.firstName || req.user.displayName}!`;
 
-        const recentTrips = await Trip.findAll({
-            where: { userId: req.user.id },
-            limit: 5,
+        const previousTrips = await Trip.findAll({
+            where: {
+                userId: req.user.id,
+                startDate: {
+                    [Op.lt]: new Date(),
+                },
+            },
+            limit: 3,
             order: [['startDate', 'DESC']],
         });
 
-        const recommendedDestinations = [
-            { id: 1, city: 'Paris', country: 'France', image: 'url_to_paris_image' },
-            { id: 2, city: 'Tokyo', country: 'Japan', image: 'url_to_tokyo_image' },
-            { id: 3, city: 'New York', country: 'USA', image: 'url_to_ny_image' },
-            { id: 4, city: 'Rome', country: 'Italy', image: 'url_to_rome_image' },
-        ];
-
-        const budgetHighlights = {
-            totalSpent: 5000,
-            averageTripCost: 1250,
-        };
+        const topRegions = await City.findAll({
+            order: [['popularity', 'DESC']],
+        });
 
         res.status(200).json({
             welcomeMessage,
-            recentTrips,
-            recommendedDestinations,
-            budgetHighlights,
+            previousTrips,
+            topRegions,
         });
-
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

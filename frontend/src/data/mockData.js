@@ -66,15 +66,6 @@ export const mockCities = [
     description: 'The Eternal City, rich in history and architectural wonders'
   },
   {
-    id: '3',
-    name: 'Tokyo',
-    country: 'Japan',
-    image: 'https://images.pexels.com/photos/2411956/pexels-photo-2411956.jpeg?auto=compress&cs=tinysrgb&w=400',
-    costIndex: 90,
-    popularity: 88,
-    description: 'A vibrant metropolis blending tradition and innovation'
-  },
-  {
     id: '4',
     name: 'Barcelona',
     country: 'Spain',
@@ -100,6 +91,87 @@ export const mockCities = [
     costIndex: 95,
     popularity: 93,
     description: 'The city that never sleeps, full of endless possibilities'
+  },
+  {
+    id: '7',
+    name: 'Sydney',
+    country: 'Australia',
+    image: 'https://images.pexels.com/photos/2193300/pexels-photo-2193300.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 88,
+    popularity: 89,
+    description: 'Iconic opera house, beautiful harbor, and vibrant culture.'
+  },
+  {
+    id: '8',
+    name: 'Rio de Janeiro',
+    country: 'Brazil',
+    image: 'https://images.pexels.com/photos/287237/pexels-photo-287237.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 60,
+    popularity: 87,
+    description: 'Famous for its carnival, beaches, and the Christ the Redeemer statue.'
+  },
+  {
+    id: '9',
+    name: 'Cairo',
+    country: 'Egypt',
+    image: 'https://images.pexels.com/photos/1699419/pexels-photo-1699419.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 30,
+    popularity: 82,
+    description: 'Home to ancient pyramids and a bustling city life along the Nile.'
+  },
+  {
+    id: '10',
+    name: 'Prague',
+    country: 'Czech Republic',
+    image: 'https://images.pexels.com/photos/1530259/pexels-photo-1530259.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 55,
+    popularity: 86,
+    description: 'A fairy-tale city with a rich history and stunning architecture.'
+  },
+  {
+    id: '11',
+    name: 'Cape Town',
+    country: 'South Africa',
+    image: 'https://images.pexels.com/photos/2779863/pexels-photo-2779863.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 50,
+    popularity: 84,
+    description: 'Stunning landscapes where mountains meet the sea.'
+  },
+  {
+    id: '12',
+    name: 'Bangkok',
+    country: 'Thailand',
+    image: 'https://images.pexels.com/photos/373912/pexels-photo-373912.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 40,
+    popularity: 91,
+    description: 'A city of contrasts with ornate shrines and vibrant street life.'
+  },
+  {
+    id: '13',
+    name: 'Amsterdam',
+    country: 'Netherlands',
+    image: 'https://images.pexels.com/photos/208709/pexels-photo-208709.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 80,
+    popularity: 88,
+    description: 'Famous for its canals, artistic heritage, and cycling culture.'
+  },
+  {
+    id: '14',
+    name: 'Dubai',
+    country: 'UAE',
+    image: 'https://images.pexels.com/photos/3787839/pexels-photo-3787839.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 92,
+    popularity: 90,
+    description: 'A futuristic city known for luxury shopping and ultramodern architecture.'
+  },
+  {
+    id: '16',
+    name: 'Santorini',
+    country: 'Greece',
+    image: 'https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=400',
+    costIndex: 78,
+    popularity: 94,
+    description: 'Iconic blue-domed churches, stunning sunsets, and beautiful beaches.'
   }
 ];
 
