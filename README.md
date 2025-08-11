@@ -12,7 +12,7 @@ PERN stack (PostgreSQL, Express.js, React, Node.js)
 - **Real-time Generation**: AI generates complete itineraries with activities, accommodations, and budget estimates
 
 ### Trip Planning Features
-- **Destination Selection**: Choose from 30+ destinations in Gujarat, India
+- **Destination Selection**: Choose many destinations across the world.
 - **Budget Customization**: Select from cheap, moderate, or luxury budget levels
 - **Travel Group Options**: Plan for solo travel, couples, families, or groups of friends
 - **Date Range Selection**: Set custom start and end dates for your trip
