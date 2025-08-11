@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { Mail, Lock, Eye, EyeOff, Plane } from 'lucide-react';
+import GoogleSignInButton from '../components/GoogleSignInButton';
+import authService from '../services/authService';
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -115,6 +117,20 @@ const LoginScreen = () => {
             >
               {loading ? 'Signing In...' : 'Sign In'}
             </motion.button>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <GoogleSignInButton 
+              onClick={() => authService.googleLogin()} 
+              text="Sign in with Google"
+            />
 
             <div className="text-center">
               <span className="text-gray-600">Don't have an account? </span>
