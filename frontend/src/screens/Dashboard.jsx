@@ -138,8 +138,18 @@ const Dashboard = () => {
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white transition-colors duration-500">{welcomeMessage}</h1>
       </div>
 
-      <div className="rounded-3xl overflow-hidden shadow-xl mb-6 h-56 md:h-72 flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
-        <span className="text-4xl md:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider">Your Adventure Awaits</span>
+      <div className="rounded-3xl overflow-hidden shadow-xl mb-6 h-[400px] md:h-[500px] flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          src="/video/banner_video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        {/* <span className="relative text-4xl md:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider z-10">
+          Your Adventure Awaits
+        </span> */}
       </div>
 
       <div className="flex flex-col md:flex-row items-center gap-3 mb-8">
