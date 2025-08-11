@@ -22,6 +22,7 @@ const TripBudget = lazy(() => import('./screens/TripBudget'));
 const TripCalendar = lazy(() => import('./screens/TripCalendar'));
 const SharedItinerary = lazy(() => import('./screens/SharedItinerary'));
 const Community = lazy(() => import('./screens/Community'));
+const BuildTripAI = lazy(() => import('./screens/BuildTripAI'));
 
 // Error boundary component
 const ErrorFallback = ({ error, resetErrorBoundary }) => (
@@ -94,6 +95,7 @@ function App() {
                     
                     {/* Public Route */}
                     <Route path="/shared/:shareId" element={<SharedItinerary />} />
+                    <Route path="/build-trip-ai" element={<ProtectedRoute><BuildTripAI /></ProtectedRoute>} />
                   </Routes>
                 </div>
               </Suspense>

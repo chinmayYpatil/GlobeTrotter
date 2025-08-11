@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
+import TripPlanningModal from '../components/TripPlanningModal';
 import { Plus, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import dashboardService from '../services/dashboardService'; // Correctly import the service
 
@@ -15,6 +16,9 @@ const Dashboard = () => {
   const [welcomeMessage, setWelcomeMessage] = useState('');
   const [previousTrips, setPreviousTrips] = useState([]);
   const [topRegions, setTopRegions] = useState([]);
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Controls state
   const [query, setQuery] = useState('');
@@ -255,9 +259,18 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <button onClick={() => navigate('/create-trip')} className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-2 text-lg font-semibold hover:bg-blue-700 transition-all">
+      <button 
+        onClick={() => setIsModalOpen(true)} 
+        className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-2 text-lg font-semibold hover:bg-blue-700 transition-all hover:scale-105"
+      >
         <Plus className="w-6 h-6" /> Plan a trip
       </button>
+
+      {/* Trip Planning Modal */}
+      <TripPlanningModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </Layout>
   );
 };
