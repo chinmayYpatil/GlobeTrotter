@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTrips } from '../contexts/TripContext';
 import Layout from '../components/Layout';
-import { Camera, Calendar, FileText, MapPin, DollarSign } from 'lucide-react';
+import { Camera, Calendar, FileText, MapPin, DollarSign, RefreshCw } from 'lucide-react';
 
 const CreateTrip = () => {
   const navigate = useNavigate();
@@ -14,10 +14,30 @@ const CreateTrip = () => {
     endDate: '',
     description: '',
     coverImage: '',
-    budget: { total: 0 } // Add budget to form state
+    budget: { total: '', currency: 'USD' }
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [exchangeRate, setExchangeRate] = useState(83.5); // Default USD to INR rate
+  const [convertedAmount, setConvertedAmount] = useState('');
+
+  // Fetch real-time exchange rate on component mount
+  useEffect(() => {
+    fetchExchangeRate();
+  }, []);
+
+  const fetchExchangeRate = async () => {
+    try {
+      // Using a free exchange rate API
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+      const data = await response.json();
+      if (data.rates && data.rates.INR) {
+        setExchangeRate(data.rates.INR);
+      }
+    } catch (error) {
+      console.log('Using default exchange rate:', exchangeRate);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +47,10 @@ const CreateTrip = () => {
     try {
       const newTrip = await createTrip({
         ...formData,
-        budget: { total: Number(formData.budget.total) || 0 }
+        budget: { 
+          total: Number(formData.budget.total) || 0,
+          currency: formData.budget.currency
+        }
       });
       navigate(`/trip/${newTrip.id}/build`);
     } catch (err) {
@@ -39,10 +62,45 @@ const CreateTrip = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'budget') {
-      setFormData({ ...formData, budget: { total: value } });
+      // Automatically overwrite zero and update converted amount
+      const newValue = value === '0' ? '' : value;
+      setFormData({ ...formData, budget: { ...formData.budget, total: newValue } });
+      
+      // Calculate converted amount
+      if (newValue && !isNaN(newValue)) {
+        if (formData.budget.currency === 'USD') {
+          setConvertedAmount((parseFloat(newValue) * exchangeRate).toFixed(2));
+        } else {
+          setConvertedAmount((parseFloat(newValue) / exchangeRate).toFixed(2));
+        }
+      } else {
+        setConvertedAmount('');
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const handleCurrencyChange = (currency) => {
+    setFormData({ ...formData, budget: { ...formData.budget, currency } });
+    
+    // Recalculate converted amount when currency changes
+    if (formData.budget.total && !isNaN(formData.budget.total)) {
+      if (currency === 'USD') {
+        setConvertedAmount((parseFloat(formData.budget.total) * exchangeRate).toFixed(2));
+      } else {
+        setConvertedAmount((parseFloat(formData.budget.total) / exchangeRate).toFixed(2));
+      }
+    }
+  };
+
+  const formatCurrency = (amount, currency) => {
+    if (currency === 'USD') {
+      return `$${amount}`;
+    } else if (currency === 'INR') {
+      return `₹${amount}`;
+    }
+    return amount;
   };
   
   const suggestedImages = [
@@ -86,10 +144,74 @@ const CreateTrip = () => {
                     </div>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Budget ($)</label>
-                    <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                        <input type="number" name="budget" value={formData.budget.total} onChange={handleChange} className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., 2500" />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Budget</label>
+                    <div className="space-y-2">
+                        {/* Currency Selection */}
+                        <div className="flex items-center space-x-2">
+                            <button
+                                type="button"
+                                onClick={() => handleCurrencyChange('USD')}
+                                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                                    formData.budget.currency === 'USD'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                }`}
+                            >
+                                USD
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleCurrencyChange('INR')}
+                                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
+                                    formData.budget.currency === 'INR'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                }`}
+                            >
+                                INR
+                            </button>
+                            <button
+                                type="button"
+                                onClick={fetchExchangeRate}
+                                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                                title="Refresh exchange rate"
+                            >
+                                <RefreshCw className="h-4 w-4" />
+                            </button>
+                        </div>
+                        
+                        {/* Budget Input */}
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm font-medium">
+                                {formData.budget.currency === 'USD' ? '$' : '₹'}
+                            </span>
+                            <input 
+                                type="number" 
+                                name="budget" 
+                                value={formData.budget.total} 
+                                onChange={handleChange} 
+                                className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" 
+                                placeholder={formData.budget.currency === 'USD' ? 'e.g., 2500' : 'e.g., 208750'} 
+                                min="0"
+                                step="0.01"
+                            />
+                        </div>
+                        
+                        {/* Converted Amount Display */}
+                        {formData.budget.total && convertedAmount && (
+                            <div className="text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                                <span className="font-medium">
+                                    {formatCurrency(formData.budget.total, formData.budget.currency)} = 
+                                    {formData.budget.currency === 'USD' 
+                                        ? ` ₹${convertedAmount}` 
+                                        : ` $${convertedAmount}`
+                                    }
+                                </span>
+                                <div className="text-xs text-gray-500 mt-1">
+                                    Exchange Rate: 1 USD = ₹{exchangeRate.toFixed(2)}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
