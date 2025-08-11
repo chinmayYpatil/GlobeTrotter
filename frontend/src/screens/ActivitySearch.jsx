@@ -20,7 +20,8 @@ import {
   Calendar,
   Users,
   TrendingUp,
-  ArrowLeft
+  ArrowLeft,
+  MessageCircle
 } from 'lucide-react';
 
 const ActivitySearch = () => {
@@ -266,52 +267,48 @@ const ActivitySearch = () => {
   };
 
   return (
-    <Layout 
-      title="Activity Search" 
-      showBack={getBackButton().show} 
-      backTo={getBackButton().backTo}
-    >
+    <Layout title="Activity Search" showBack={true} backTo="/">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-6"
+        className="space-y-4 sm:space-y-6"
       >
-        {/* Enhanced Search Header */}
-        <motion.div variants={itemVariants} className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl p-8 text-white shadow-xl">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold mb-2">Discover Amazing Activities</h1>
-            <p className="text-blue-100 text-lg">
-              {isStandalone 
-                ? "Find the perfect experiences for your next adventure" 
-                : "Find the perfect experiences for your trip"
-              }
+        {/* Search Header */}
+        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+          <div className="text-center mb-4 sm:mb-6">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Search className="h-8 w-8 sm:h-12 sm:w-12 mr-2 sm:mr-3" />
+              <h1 className="text-2xl sm:text-4xl font-bold">Find Amazing Activities</h1>
+            </div>
+            <p className="text-purple-100 text-sm sm:text-xl max-w-2xl mx-auto">
+              Discover exciting activities, tours, and experiences for your next adventure
             </p>
           </div>
           
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 h-6 w-6" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5 sm:h-6 sm:w-6" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search for activities..."
-              className="w-full pl-12 pr-4 py-4 text-gray-900 text-lg border-0 rounded-2xl focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50"
+              placeholder="Search activities, tours, or experiences..."
+              className="w-full pl-12 sm:pl-12 pr-4 py-3 sm:py-4 text-gray-900 text-base sm:text-lg border-0 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-purple-300 focus:ring-opacity-50"
             />
           </div>
         </motion.div>
 
-        {/* Controls Bar */}
-        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Left Controls */}
-            <div className="flex items-center space-x-4">
+        {/* Filters */}
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            {/* Left Filters */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all ${
-                  showFilters 
-                    ? 'bg-blue-600 text-white shadow-lg' 
+                className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl transition-all text-sm sm:text-base ${
+                  showFilters
+                    ? 'bg-purple-600 text-white shadow-lg'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -322,7 +319,7 @@ const ActivitySearch = () => {
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
+                className="px-3 sm:px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -337,22 +334,22 @@ const ActivitySearch = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'grid' 
-                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                  viewMode === 'grid'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
                     : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
-                <Grid3X3 className="h-5 w-5" />
+                <Grid3X3 className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'list' 
-                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' 
+                  viewMode === 'list'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
                     : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
-                <List className="h-5 w-5" />
+                <List className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>
@@ -364,57 +361,62 @@ const ActivitySearch = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
+                className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Activity Type */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {/* Category Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Activity Type</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Category</label>
                     <select
-                      value={filters.type}
-                      onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
+                      value={filters.category}
+                      onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
                     >
-                      {activityTypes.map(type => (
-                        <option key={type.value} value={type.value}>
-                          {type.icon} {type.label}
+                      {categories.map(category => (
+                        <option key={category.value} value={category.value}>
+                          {category.icon} {category.label}
                         </option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Max Cost */}
+                  {/* Price Range Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Max Cost ($)</label>
-                    <input
-                      type="number"
-                      value={filters.maxCost}
-                      onChange={(e) => setFilters({ ...filters, maxCost: e.target.value })}
-                      placeholder="Any"
-                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Price Range</label>
+                    <select
+                      value={filters.priceRange}
+                      onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
+                    >
+                      {priceRanges.map(range => (
+                        <option key={range.value} value={range.value}>
+                          {range.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  {/* Min Rating */}
+                  {/* Duration Filter */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Min Rating</label>
-                    <input
-                      type="number"
-                      value={filters.minRating}
-                      onChange={(e) => setFilters({ ...filters, minRating: e.target.value })}
-                      placeholder="Any"
-                      step="0.1"
-                      min="0"
-                      max="5"
-                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Duration</label>
+                    <select
+                      value={filters.duration}
+                      onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
+                    >
+                      {durations.map(duration => (
+                        <option key={duration.value} value={duration.value}>
+                          {duration.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   {/* Clear Filters */}
                   <div className="flex items-end">
                     <button
                       onClick={clearFilters}
-                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
                     >
                       Clear Filters
                     </button>
@@ -426,9 +428,9 @@ const ActivitySearch = () => {
         </motion.div>
 
         {/* Results Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
-            Results ({filteredActivities.length})
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
+            Activities ({filteredActivities.length})
           </h2>
           <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
             Showing {filteredActivities.length} of {activities.length} activities
@@ -437,15 +439,17 @@ const ActivitySearch = () => {
 
         {/* Activities Grid/List */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredActivities.map((activity) => (
               <motion.div
                 key={activity.id}
                 variants={itemVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                onClick={() => openActivityDetails(activity)}
               >
-                <div className="h-48 relative overflow-hidden group">
+                {/* Activity Image */}
+                <div className="h-40 sm:h-48 relative overflow-hidden group">
                   <img
                     src={activity.image}
                     alt={activity.name}
@@ -453,141 +457,179 @@ const ActivitySearch = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   
-                  {/* Activity Type Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
-                      {activityTypes.find(t => t.value === activity.type)?.icon} {activity.type}
+                  {/* Category Badge */}
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
+                      {categories.find(c => c.value === activity.category)?.icon} {activity.category}
                     </span>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="absolute top-4 right-4 flex space-x-2">
-                    <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors">
-                      <Heart className="h-4 w-4 text-white" />
-                    </button>
-                    <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors">
-                      <Share2 className="h-4 w-4 text-white" />
-                    </button>
+                  {/* Rating */}
+                  <div className="absolute top-3 right-3">
+                    <div className="bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
+                      <Star className="h-3 w-3 mr-1 fill-current" />
+                      {activity.rating}
+                    </div>
                   </div>
 
-                  {/* Activity Name */}
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-white font-bold text-xl mb-1">{activity.name}</h3>
-                    <p className="text-white/90 text-sm">{activity.location}</p>
+                  {/* Activity Info Overlay */}
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">{activity.name}</h3>
+                    <p className="text-white/90 text-xs sm:text-sm flex items-center">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {activity.location}
+                    </p>
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed transition-colors duration-500">{activity.description}</p>
-                  
+                <div className="p-3 sm:p-4">
                   {/* Activity Details */}
-                  <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-blue-500" />
-                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.duration}h</span>
+                  <p className="text-gray-600 dark:text-gray-300 mb-3 text-xs sm:text-sm leading-relaxed line-clamp-2 transition-colors duration-500">
+                    {activity.description}
+                  </p>
+                  
+                  {/* Activity Info */}
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>{activity.duration}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <DollarSign className="h-4 w-4 text-green-500" />
-                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">${activity.cost}</span>
+                    <div className="flex items-center space-x-1">
+                      <DollarSign className="h-3 w-3" />
+                      <span>{activity.price}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Star className="h-4 w-4 text-yellow-500" />
-                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.rating}</span>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-3 w-3" />
+                      <span>{activity.maxGroupSize}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-purple-500" />
-                      <span className="text-gray-600 dark:text-gray-300 transition-colors duration-500">{activity.groupSize}</span>
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-3 w-3" />
+                      <span>{activity.rating}</span>
                     </div>
                   </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1 sm:gap-2 mb-3">
+                    {activity.tags.slice(0, 2).map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                   
-                  {/* Add Activity Button */}
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleAddActivity(activity)}
-                    className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-3 px-4 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all flex items-center justify-center space-x-2 shadow-lg"
-                  >
-                    {isStandalone ? (
-                      <>
-                        <Plus className="h-4 w-4" />
-                        <span>Plan This Activity</span>
-                      </>
-                    ) : stop?.activities?.includes(activity.id) ? (
-                      <span>Already Added</span>
-                    ) : (
-                      <>
-                        <Plus className="h-4 w-4" />
-                        <span>Add to Trip</span>
-                      </>
-                    )}
-                  </motion.button>
+                  {/* Action Buttons */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleLike(activity.id); }}
+                        className="flex items-center space-x-1 hover:text-red-500 transition-colors"
+                      >
+                        <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span>{activity.likes}</span>
+                      </button>
+                      <div className="flex items-center space-x-1">
+                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span>{activity.reviews}</span>
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
+                      {activity.createdAt}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
         ) : (
           /* List View */
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredActivities.map((activity) => (
               <motion.div
                 key={activity.id}
                 variants={itemVariants}
-                whileHover={{ x: 4 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all"
+                whileHover={{ x: 2 }}
+                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all cursor-pointer"
+                onClick={() => openActivityDetails(activity)}
               >
-                <div className="flex items-center space-x-6">
+                <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
+                  {/* Activity Image */}
                   <img
                     src={activity.image}
                     alt={activity.name}
-                    className="w-24 h-24 rounded-xl object-cover"
+                    className="w-full sm:w-32 h-32 rounded-lg sm:rounded-xl object-cover flex-shrink-0"
                   />
                   
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2 transition-colors duration-500">{activity.name}</h3>
-                        <p className="text-gray-600 dark:text-gray-300 mb-3 transition-colors duration-500">{activity.description}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex-1">
+                        {/* Activity Title and Category */}
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <h3 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white mb-1 transition-colors duration-500">{activity.name}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 transition-colors duration-500">{activity.location}</p>
+                          </div>
+                          <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full font-medium ml-2 transition-colors duration-500">
+                            {categories.find(c => c.value === activity.category)?.icon} {activity.category}
+                          </span>
+                        </div>
                         
-                        <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                        <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm transition-colors duration-500">{activity.description}</p>
+                        
+                        {/* Activity Details */}
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <div className="flex items-center space-x-2">
-                            <Clock className="h-4 w-4 text-blue-500" />
-                            <span>{activity.duration}h</span>
+                            <Clock className="h-4 w-4" />
+                            <span>{activity.duration}</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <DollarSign className="h-4 w-4 text-green-500" />
-                            <span>${activity.cost}</span>
+                            <DollarSign className="h-4 w-4" />
+                            <span>{activity.price}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4" />
+                            <span>{activity.maxGroupSize}</span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Star className="h-4 w-4 text-yellow-500" />
                             <span>{activity.rating}</span>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <MapPin className="h-4 w-4 text-purple-500" />
-                            <span>{activity.location}</span>
-                          </div>
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {activity.tags.slice(0, 4).map((tag, index) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
                         </div>
                       </div>
                       
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleAddActivity(activity)}
-                        className="bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all flex items-center space-x-2 shadow-lg"
-                      >
-                        {isStandalone ? (
-                          <>
-                            <Plus className="h-4 w-4" />
-                            <span>Plan</span>
-                          </>
-                        ) : stop?.activities?.includes(activity.id) ? (
-                          <span>Added</span>
-                        ) : (
-                          <>
-                            <Plus className="h-4 w-4" />
-                            <span>Add</span>
-                          </>
-                        )}
-                      </motion.button>
+                      {/* Action Buttons */}
+                      <div className="flex flex-col items-end space-y-2 sm:space-y-3">
+                        <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleLike(activity.id); }}
+                            className="flex items-center space-x-1 hover:text-red-500 transition-colors"
+                          >
+                            <Heart className="h-4 w-4" />
+                            <span>{activity.likes}</span>
+                          </button>
+                          <div className="flex items-center space-x-1">
+                            <MessageCircle className="h-4 w-4" />
+                            <span>{activity.reviews}</span>
+                          </div>
+                        </div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
+                          {activity.createdAt}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -598,21 +640,138 @@ const ActivitySearch = () => {
 
         {/* No Results State */}
         {filteredActivities.length === 0 && (
-          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-3xl p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
-            <div className="text-gray-400 text-8xl mb-6">🔍</div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">No activities found</h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto transition-colors duration-500">
+          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-8 sm:p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
+            <div className="text-gray-400 text-4xl sm:text-6xl mb-4 sm:mb-6">🎯</div>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 transition-colors duration-500">No activities found</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-md mx-auto transition-colors duration-500 text-sm sm:text-base">
               Try adjusting your search criteria or filters to find more activities
             </p>
             <button 
               onClick={clearFilters}
-              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
+              className="bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-purple-700 transition-colors text-sm sm:text-base"
             >
               Clear All Filters
             </button>
           </motion.div>
         )}
       </motion.div>
+
+      {/* Activity Details Modal */}
+      <AnimatePresence>
+        {selectedActivity && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
+            onClick={closeActivityDetails}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl max-w-2xl sm:max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={selectedActivity.image}
+                      alt={selectedActivity.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white transition-colors duration-500">{selectedActivity.name}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">{selectedActivity.location}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeActivityDetails}
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-4 sm:p-6">
+                {/* Activity Image */}
+                <div className="mb-4 sm:mb-6">
+                  <img
+                    src={selectedActivity.image}
+                    alt={selectedActivity.name}
+                    className="w-full h-48 sm:h-64 object-cover rounded-xl"
+                  />
+                </div>
+
+                {/* Activity Details */}
+                <div className="mb-4 sm:mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-500">{selectedActivity.name}</h2>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4 transition-colors duration-500">
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-4 w-4" />
+                      <span>{selectedActivity.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Clock className="h-4 w-4" />
+                      <span>{selectedActivity.duration}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <DollarSign className="h-4 w-4" />
+                      <span>{selectedActivity.price}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-4 w-4" />
+                      <span>{selectedActivity.maxGroupSize}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      <span>{selectedActivity.rating}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed transition-colors duration-500">{selectedActivity.description}</p>
+                </div>
+
+                {/* Tags */}
+                {selectedActivity.tags.length > 0 && (
+                  <div className="mb-4 sm:mb-6">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-500">Tags</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedActivity.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full transition-colors duration-500"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => handleLike(selectedActivity.id)}
+                    className="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
+                  >
+                    Like Activity
+                  </button>
+                  <button
+                    onClick={() => {/* Add to itinerary logic */}}
+                    className="flex-1 px-4 sm:px-6 py-2 sm:py-3 border border-purple-600 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-sm sm:text-base"
+                  >
+                    Add to Itinerary
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 };

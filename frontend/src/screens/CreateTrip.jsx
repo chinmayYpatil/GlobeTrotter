@@ -116,18 +116,18 @@ const CreateTrip = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto px-4 sm:px-0"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition-colors duration-500">
-          <div className="text-center mb-8">
-            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl flex items-center justify-center mb-4">
-              <MapPin className="h-8 w-8 text-white" />
+        <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-xl p-6 sm:p-8 transition-colors duration-500">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="mx-auto h-12 w-12 sm:h-16 sm:w-16 bg-gradient-to-r from-blue-500 to-teal-500 rounded-xl flex items-center justify-center mb-4">
+              <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">Create Your Trip</h1>
-            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-500">Let's start planning your next adventure</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">Create Your Trip</h1>
+            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-500 text-sm sm:text-base">Let's start planning your next adventure</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {error && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg transition-colors duration-500">
                     {error}
@@ -135,7 +135,7 @@ const CreateTrip = () => {
             )}
             
             {/* Trip Name and Budget */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Trip Name *</label>
                     <div className="relative">
@@ -217,7 +217,7 @@ const CreateTrip = () => {
             </div>
 
             {/* Date Range */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Start Date *</label>
                 <div className="relative">
@@ -244,7 +244,7 @@ const CreateTrip = () => {
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Cover Image</label>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-colors duration-500">Choose from suggestions:</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {suggestedImages.map((imageUrl, index) => (
                     <motion.button key={index} type="button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                         onClick={() => setFormData({ ...formData, coverImage: imageUrl })}
@@ -261,7 +261,7 @@ const CreateTrip = () => {
             <motion.button
               whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               type="submit" disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-4 px-6 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-3 sm:py-4 px-6 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all disabled:opacity-50 text-sm sm:text-base"
             >
               {loading ? 'Creating Trip...' : 'Create Trip & Start Planning'}
             </motion.button>

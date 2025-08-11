@@ -134,11 +134,11 @@ const Dashboard = () => {
 
   return (
     <Layout title="Dashboard">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white transition-colors duration-500">{welcomeMessage}</h1>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white transition-colors duration-500">{welcomeMessage}</h1>
       </div>
 
-      <div className="rounded-3xl overflow-hidden shadow-xl mb-6 h-[400px] md:h-[500px] flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
+      <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl mb-6 h-[250px] sm:h-[350px] md:h-[400px] lg:h-[500px] flex items-center justify-center bg-gradient-to-r from-blue-700 to-teal-500 relative">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
           src="/video/banner_video.mp4"
@@ -147,24 +147,24 @@ const Dashboard = () => {
           muted
           playsInline
         />
-        {/* <span className="relative text-4xl md:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider z-10">
+        {/* <span className="relative text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-extrabold drop-shadow-lg tracking-wider z-10">
           Your Adventure Awaits
         </span> */}
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-3 mb-8">
+      <div className="flex flex-col gap-3 mb-6 sm:mb-8">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search destinations..."
-          className="flex-1 rounded-xl px-4 py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow transition-colors duration-500"
+          className="w-full rounded-xl px-4 py-3 sm:py-2 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow transition-colors duration-500"
         />
-        <div className="flex gap-2 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             value={priceBand}
             onChange={(e) => setPriceBand(e.target.value)}
-            className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 shadow text-gray-700 dark:text-gray-300 font-medium transition-colors duration-500"
+            className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 shadow text-gray-700 dark:text-gray-300 font-medium transition-colors duration-500"
           >
             <option value="all">All Budgets</option>
             <option value="budget">Budget</option>
@@ -174,7 +174,7 @@ const Dashboard = () => {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 shadow text-gray-700 dark:text-gray-300 font-medium transition-colors duration-500"
+            className="w-full sm:w-auto px-4 py-3 sm:py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 shadow text-gray-700 dark:text-gray-300 font-medium transition-colors duration-500"
           >
             <option value="popularity_desc">Sort by: Popularity</option>
             <option value="name_asc">Sort by: Name (A-Z)</option>
@@ -184,11 +184,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mb-10">
-        <h2 className="text-xl md:text-2xl font-bold text-blue-900 dark:text-blue-100 tracking-wide mb-3 transition-colors duration-500">Top Regional Selections</h2>
+      <div className="mb-8 sm:mb-10">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-900 dark:text-blue-100 tracking-wide mb-3 transition-colors duration-500">Top Regional Selections</h2>
 
         {filteredAndSorted.length === 0 ? (
-          <div className="rounded-2xl bg-white/60 dark:bg-gray-800/60 p-8 border border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400 transition-colors duration-500">
+          <div className="rounded-xl sm:rounded-2xl bg-white/60 dark:bg-gray-800/60 p-6 sm:p-8 border border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400 transition-colors duration-500">
             No destinations match your filters.
           </div>
         ) : (
@@ -199,35 +199,35 @@ const Dashboard = () => {
           >
             <div
               ref={carouselRef}
-              className="rounded-2xl bg-white/60 dark:bg-gray-800/60 p-4 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-500"
+              className="rounded-xl sm:rounded-2xl bg-white/60 dark:bg-gray-800/60 p-3 sm:p-4 border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-500"
             >
-              <div className="flex gap-4 w-max">
+              <div className="flex gap-3 sm:gap-4 w-max">
                 {duplicatedList.map((region, idx) => (
                   <div
                     key={`${region.id}-${idx}`}
-                    className="w-56 flex-shrink-0 bg-white dark:bg-gray-700 rounded-2xl shadow hover:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 cursor-pointer transition-transform hover:-translate-y-0.5 transition-colors duration-500"
+                    className="w-48 sm:w-56 flex-shrink-0 bg-white dark:bg-gray-700 rounded-xl sm:rounded-2xl shadow hover:shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 cursor-pointer transition-transform hover:-translate-y-0.5 transition-colors duration-500"
                   >
-                    <img src={region.image} alt={region.name} className="w-full h-36 object-cover" />
+                    <img src={region.image} alt={region.name} className="w-full h-28 sm:h-36 object-cover" />
                     <div className="p-3">
-                      <div className="font-semibold text-gray-900 dark:text-white truncate transition-colors duration-500">{region.name}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white truncate text-sm sm:text-base transition-colors duration-500">{region.name}</div>
                       <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">{region.country}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            {/* Side arrows */}
+            {/* Side arrows - hidden on mobile */}
             <button
               onClick={handlePrev}
               aria-label="Scroll left"
-              className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 dark:bg-gray-700/90 border border-gray-200 dark:border-gray-600 shadow opacity-0 group-hover:opacity-100 transition-opacity"
+              className="hidden lg:flex absolute left-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 dark:bg-gray-700/90 border border-gray-200 dark:border-gray-600 shadow opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <ChevronLeft className="w-5 h-5 dark:text-white" />
             </button>
             <button
               onClick={handleNext}
               aria-label="Scroll right"
-              className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 dark:bg-gray-700/90 border border-gray-200 dark:border-gray-600 shadow opacity-0 group-hover:opacity-100 transition-opacity"
+              className="hidden lg:flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-white/90 dark:bg-gray-700/90 border border-gray-200 dark:border-gray-600 shadow opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <ChevronRight className="w-5 h-5 dark:text-white" />
             </button>
@@ -235,33 +235,32 @@ const Dashboard = () => {
         )}
       </div>
 
-      <div className="mb-24">
-        <h2 className="text-xl md:text-2xl font-bold text-blue-900 dark:text-blue-100 mb-4 tracking-wide transition-colors duration-500">Previous Trips</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mb-16 sm:mb-24">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-900 dark:text-blue-100 mb-4 tracking-wide transition-colors duration-500">Previous Trips</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {previousTrips.length > 0 ? previousTrips.map(trip => (
-            <div key={trip.id} className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 cursor-pointer hover:shadow-2xl transition-shadow transition-colors duration-500" onClick={() => navigate(`/trip/${trip.id}/view`)}>
-              <div className="h-36 bg-gradient-to-r from-blue-400 to-teal-400 relative overflow-hidden">
+            <div key={trip.id} className="bg-white dark:bg-gray-700 rounded-xl sm:rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 cursor-pointer hover:shadow-2xl transition-shadow transition-colors duration-500" onClick={() => navigate(`/trip/${trip.id}/view`)}>
+              <div className="h-28 sm:h-36 bg-gradient-to-r from-blue-400 to-teal-400 relative overflow-hidden">
                 {trip.coverImage ? (
                   <img src={trip.coverImage} alt={trip.name} className="w-full h-full object-cover" />
                 ) : <div className="absolute inset-0 bg-black bg-opacity-20"></div>}
-                <div className="absolute bottom-3 left-3">
-                  <h3 className="text-white font-bold text-lg">{trip.name || 'Untitled Trip'}</h3>
+                <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                  <h3 className="text-white font-bold text-sm sm:text-lg">{trip.name || 'Untitled Trip'}</h3>
                 </div>
               </div>
-              <div className="p-4">
-                <div className="text-gray-600 dark:text-gray-300 mb-2 line-clamp-2 text-sm transition-colors duration-500">{trip.description || 'No description.'}</div>
-                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
+              <div className="p-3 sm:p-4">
+                <div className="text-gray-600 dark:text-gray-300 mb-2 line-clamp-2 text-xs sm:text-sm transition-colors duration-500">{trip.description || 'No description.'}</div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
                   <span>{new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}</span>
-
-                 <span>${trip.budget.total}</span>
-                 </div>
+                  <span>${trip.budget.total}</span>
+                </div>
               </div>
             </div>
           )) : (
-            <div className="col-span-full bg-white dark:bg-gray-700 rounded-2xl p-12 text-center border border-gray-200 dark:border-gray-600 transition-colors duration-500">
-              <span className="block text-gray-400 text-3xl mb-4">🗺️</span>
-              <p className="text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-500">No previous trips found</p>
-              <button onClick={() => navigate('/create-trip')} className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <div className="col-span-full bg-white dark:bg-gray-700 rounded-xl sm:rounded-2xl p-8 sm:p-12 text-center border border-gray-200 dark:border-gray-600 transition-colors duration-500">
+              <span className="block text-gray-400 text-2xl sm:text-3xl mb-4">🗺️</span>
+              <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base transition-colors duration-500">No previous trips found</p>
+              <button onClick={() => navigate('/create-trip')} className="bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
                 Plan Your First Trip
               </button>
             </div>
@@ -271,9 +270,11 @@ const Dashboard = () => {
 
       <button 
         onClick={() => setIsModalOpen(true)} 
-        className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-2 text-lg font-semibold hover:bg-blue-700 transition-all hover:scale-105"
+        className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50 bg-blue-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-2xl flex items-center gap-2 text-base sm:text-lg font-semibold hover:bg-blue-700 transition-all hover:scale-105"
       >
-        <Plus className="w-6 h-6" /> Plan a trip
+        <Plus className="w-5 h-5 sm:w-6 sm:h-6" /> 
+        <span className="hidden sm:inline">Plan a trip</span>
+        <span className="sm:hidden">Plan</span>
       </button>
 
       {/* Trip Planning Modal */}

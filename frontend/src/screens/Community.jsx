@@ -397,43 +397,43 @@ const Community = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-6"
+        className="space-y-4 sm:space-y-6"
       >
         {/* Community Header */}
-        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 text-white shadow-xl">
-          <div className="text-center mb-6">
-            <div className="flex items-center justify-center mb-4">
-              <Globe className="h-12 w-12 mr-3" />
-              <h1 className="text-4xl font-bold">GlobalTrotter Community</h1>
+        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+          <div className="text-center mb-4 sm:mb-6">
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Globe className="h-8 w-8 sm:h-12 sm:w-12 mr-2 sm:mr-3" />
+              <h1 className="text-2xl sm:text-4xl font-bold">GlobalTrotter Community</h1>
             </div>
-            <p className="text-purple-100 text-xl max-w-2xl mx-auto">
+            <p className="text-purple-100 text-sm sm:text-xl max-w-2xl mx-auto">
               Share your travel experiences, discover amazing destinations, and connect with fellow adventurers from around the world
             </p>
           </div>
           
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 h-6 w-6" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5 sm:h-6 sm:w-6" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search experiences, destinations, or travelers..."
-              className="w-full pl-12 pr-4 py-4 text-gray-900 text-lg border-0 rounded-2xl focus:ring-4 focus:ring-purple-300 focus:ring-opacity-50"
+              className="w-full pl-12 sm:pl-12 pr-4 py-3 sm:py-4 text-gray-900 text-base sm:text-lg border-0 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-purple-300 focus:ring-opacity-50"
             />
           </div>
         </motion.div>
 
         {/* Controls Bar */}
-        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             {/* Left Controls */}
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all ${
-                  showFilters 
-                    ? 'bg-purple-600 text-white shadow-lg' 
+                className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl transition-all text-sm sm:text-base ${
+                  showFilters
+                    ? 'bg-purple-600 text-white shadow-lg'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
@@ -444,7 +444,7 @@ const Community = () => {
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
+                className="px-3 sm:px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm sm:text-base"
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -459,22 +459,22 @@ const Community = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'grid' 
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' 
+                  viewMode === 'grid'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
                     : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
-                <Grid3X3 className="h-5 w-5" />
+                <Grid3X3 className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'list' 
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' 
+                  viewMode === 'list'
+                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
                     : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                 }`}
               >
-                <List className="h-5 w-5" />
+                <List className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>
@@ -486,16 +486,16 @@ const Community = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
+                className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {/* Category Filter */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Category</label>
                     <select
                       value={filters.category}
                       onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
                     >
                       {categories.map(category => (
                         <option key={category.value} value={category.value}>
@@ -511,7 +511,7 @@ const Community = () => {
                     <select
                       value={filters.location}
                       onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
+                      className="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500 text-sm"
                     >
                       <option value="all">All Locations</option>
                       <option value="Europe">Europe</option>
@@ -526,7 +526,7 @@ const Community = () => {
                   <div className="flex items-end">
                     <button
                       onClick={clearFilters}
-                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm"
                     >
                       Clear Filters
                     </button>
@@ -538,8 +538,8 @@ const Community = () => {
         </motion.div>
 
         {/* Results Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
             Community Experiences ({filteredPosts.length})
           </h2>
           <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
@@ -549,17 +549,17 @@ const Community = () => {
 
         {/* Community Posts Grid/List */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredPosts.map((post) => (
               <motion.div
                 key={post.id}
                 variants={itemVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => openEnlargedPost(post)}
               >
                 {/* Post Images */}
-                <div className="h-48 relative overflow-hidden group">
+                <div className="h-40 sm:h-48 relative overflow-hidden group">
                   <img
                     src={post.images[0]}
                     alt={post.trip.name}
@@ -568,14 +568,14 @@ const Community = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   
                   {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
                       {categories.find(c => c.value === post.category)?.icon} {post.category}
                     </span>
                   </div>
 
                   {/* Trip Rating */}
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-3 right-3">
                     <div className="bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
                       <Star className="h-3 w-3 mr-1 fill-current" />
                       {post.trip.rating}
@@ -583,26 +583,26 @@ const Community = () => {
                   </div>
 
                   {/* Trip Info Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-white font-bold text-lg mb-1">{post.trip.name}</h3>
-                    <p className="text-white/90 text-sm flex items-center">
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">{post.trip.name}</h3>
+                    <p className="text-white/90 text-xs sm:text-sm flex items-center">
                       <MapPin className="h-3 w-3 mr-1" />
                       {post.trip.location}
                     </p>
                   </div>
                 </div>
                 
-                <div className="p-6">
+                <div className="p-3 sm:p-4">
                   {/* User Info */}
-                  <div className="flex items-center space-x-3 mb-4">
+                  <div className="flex items-center space-x-3 mb-3 sm:mb-4">
                     <img
                       src={post.user.avatar}
                       alt={post.user.name}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                     />
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white transition-colors duration-500">{post.user.name}</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center transition-colors duration-500">
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base transition-colors duration-500">{post.user.name}</h4>
+                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex items-center transition-colors duration-500">
                         <MapPin className="h-3 w-3 mr-1" />
                         {post.user.location}
                       </p>
@@ -610,12 +610,12 @@ const Community = () => {
                   </div>
 
                   {/* Post Content */}
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3 transition-colors duration-500">
+                  <p className="text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed line-clamp-3 transition-colors duration-500">
                     {post.content}
                   </p>
                   
                   {/* Trip Details */}
-                  <div className="grid grid-cols-3 gap-3 mb-4 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
                     <div className="flex items-center space-x-1">
                       <Clock className="h-3 w-3" />
                       <span>{post.trip.duration}</span>
@@ -631,7 +631,7 @@ const Community = () => {
                   </div>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
                     {post.tags.slice(0, 3).map((tag, index) => (
                       <span
                         key={index}
@@ -644,16 +644,16 @@ const Community = () => {
                   
                   {/* Action Buttons */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                       <button
                         onClick={(e) => { e.stopPropagation(); handleLike(post.id); }}
                         className="flex items-center space-x-1 hover:text-red-500 transition-colors"
                       >
-                        <Heart className="h-4 w-4" />
+                        <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span>{post.likes}</span>
                       </button>
                       <div className="flex items-center space-x-1">
-                        <MessageCircle className="h-4 w-4" />
+                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span>{post.comments?.length || 0}</span>
                       </div>
                       <button
@@ -663,7 +663,7 @@ const Community = () => {
                         }}
                         className="flex items-center space-x-1 hover:text-blue-500 transition-colors"
                       >
-                        <Share2 className="h-4 w-4" />
+                        <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span>{post.shares}</span>
                       </button>
                     </div>
@@ -677,26 +677,26 @@ const Community = () => {
           </div>
         ) : (
           /* List View */
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredPosts.map((post) => (
               <motion.div
                 key={post.id}
                 variants={itemVariants}
-                whileHover={{ x: 4 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all cursor-pointer"
+                whileHover={{ x: 2 }}
+                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all cursor-pointer"
                 onClick={() => openEnlargedPost(post)}
               >
-                <div className="flex items-start space-x-6">
+                <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-6">
                   {/* Post Image */}
                   <img
                     src={post.images[0]}
                     alt={post.trip.name}
-                    className="w-32 h-32 rounded-xl object-cover"
+                    className="w-full sm:w-32 h-32 rounded-lg sm:rounded-xl object-cover flex-shrink-0"
                   />
                   
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex-1">
                         {/* User Info */}
                         <div className="flex items-center space-x-3 mb-3">
                           <img
@@ -705,17 +705,17 @@ const Community = () => {
                             className="w-8 h-8 rounded-full object-cover"
                           />
                           <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-white transition-colors duration-500">{post.user.name}</h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">{post.user.location}</p>
+                            <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base transition-colors duration-500">{post.user.name}</h4>
+                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">{post.user.location}</p>
                           </div>
                         </div>
 
                         {/* Trip Title */}
-                        <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-2 transition-colors duration-500">{post.trip.name}</h3>
-                        <p className="text-gray-600 dark:text-gray-300 mb-3 transition-colors duration-500">{post.content}</p>
+                        <h3 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white mb-2 transition-colors duration-500">{post.trip.name}</h3>
+                        <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm transition-colors duration-500">{post.content}</p>
                         
                         {/* Trip Details */}
-                        <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <div className="flex items-center space-x-2">
                             <MapPin className="h-4 w-4" />
                             <span>{post.trip.location}</span>
@@ -735,7 +735,7 @@ const Community = () => {
                         </div>
 
                         {/* Tags */}
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 mt-3">
                           {post.tags.slice(0, 4).map((tag, index) => (
                             <span
                               key={index}
@@ -748,7 +748,7 @@ const Community = () => {
                       </div>
                       
                       {/* Action Buttons */}
-                      <div className="flex flex-col items-end space-y-3">
+                      <div className="flex flex-col items-end space-y-2 sm:space-y-3">
                         <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
                           <button
                             onClick={(e) => { e.stopPropagation(); handleLike(post.id); }}
@@ -786,15 +786,15 @@ const Community = () => {
 
         {/* No Results State */}
         {filteredPosts.length === 0 && (
-          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-3xl p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
-            <div className="text-gray-400 text-8xl mb-6">🌍</div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">No experiences found</h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto transition-colors duration-500">
+          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-8 sm:p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
+            <div className="text-gray-400 text-4xl sm:text-6xl mb-4 sm:mb-6">🌍</div>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 transition-colors duration-500">No experiences found</h3>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-md mx-auto transition-colors duration-500 text-sm sm:text-base">
               Try adjusting your search criteria or filters to find more community experiences
             </p>
             <button 
               onClick={clearFilters}
-              className="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 transition-colors"
+              className="bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-purple-700 transition-colors text-sm sm:text-base"
             >
               Clear All Filters
             </button>
@@ -802,16 +802,16 @@ const Community = () => {
         )}
 
         {/* Share Experience CTA */}
-        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 text-white text-center shadow-xl">
-          <h3 className="text-2xl font-bold mb-4">Share Your Experience!</h3>
-          <p className="text-purple-100 mb-6 max-w-md mx-auto">
+        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white text-center shadow-xl">
+          <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Share Your Experience!</h3>
+          <p className="text-purple-100 mb-4 sm:mb-6 max-w-md mx-auto text-sm sm:text-base">
             Have an amazing trip story? Share it with the GlobalTrotter community and inspire others to explore the world.
           </p>
           <button 
-            className="bg-white text-purple-600 px-8 py-3 rounded-xl hover:bg-gray-100 transition-colors font-semibold flex items-center space-x-2 mx-auto"
+            className="bg-white text-purple-600 px-6 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors font-semibold flex items-center space-x-2 mx-auto text-sm sm:text-base"
             onClick={() => setShowShareModal(true)}
           >
-            <Plus className="h-5 w-5" />
+            <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>Share Experience</span>
           </button>
         </motion.div>
@@ -831,52 +831,52 @@ const Community = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Share Your Experience</h2>
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">Share Your Experience</h2>
                 <button
                   onClick={() => setShowShareModal(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                 >
                   <X className="h-6 w-6" />
                 </button>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Trip Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Trip Title *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Trip Title *</label>
                   <input
                     type="text"
                     value={shareForm.title}
                     onChange={(e) => setShareForm({ ...shareForm, title: e.target.value })}
                     placeholder="e.g., Amazing Adventure in the Alps"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   />
                 </div>
 
                 {/* Experience Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Your Experience *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Your Experience *</label>
                   <textarea
                     value={shareForm.content}
                     onChange={(e) => setShareForm({ ...shareForm, content: e.target.value })}
                     placeholder="Share the details of your amazing trip..."
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   />
                 </div>
 
                 {/* Trip Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Category</label>
                     <select
                       value={shareForm.category}
                       onChange={(e) => setShareForm({ ...shareForm, category: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-500"
                     >
                       {categories.slice(1).map(category => (
                         <option key={category.value} value={category.value}>
@@ -887,42 +887,42 @@ const Community = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Location</label>
                     <input
                       type="text"
                       value={shareForm.location}
                       onChange={(e) => setShareForm({ ...shareForm, location: e.target.value })}
                       placeholder="e.g., Paris, France"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Duration</label>
                     <input
                       type="text"
                       value={shareForm.duration}
                       onChange={(e) => setShareForm({ ...shareForm, duration: e.target.value })}
                       placeholder="e.g., 5 days"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Cost</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Cost</label>
                     <input
                       type="text"
                       value={shareForm.cost}
                       onChange={(e) => setShareForm({ ...shareForm, cost: e.target.value })}
                       placeholder="e.g., $2,500"
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                     />
                   </div>
                 </div>
 
                 {/* Rating */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Rating</label>
                   <div className="flex items-center space-x-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -934,27 +934,27 @@ const Community = () => {
                         ★
                       </button>
                     ))}
-                    <span className="ml-2 text-sm text-gray-600">{shareForm.rating}/5</span>
+                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">{shareForm.rating}/5</span>
                   </div>
                 </div>
 
                 {/* Tags */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Tags (comma-separated)</label>
                   <input
                     type="text"
                     value={shareForm.tags}
                     onChange={(e) => setShareForm({ ...shareForm, tags: e.target.value })}
                     placeholder="e.g., adventure, mountains, hiking, europe"
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-500"
                   />
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex space-x-4 pt-4">
+                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
                   <button
                     onClick={() => setShowShareModal(false)}
-                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                    className="flex-1 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
                     Cancel
                   </button>
@@ -987,11 +987,11 @@ const Community = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl max-w-2xl sm:max-w-4xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="p-6 border-b border-gray-200">
+              <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <img
@@ -1000,13 +1000,13 @@ const Community = () => {
                       className="w-12 h-12 rounded-full object-cover"
                     />
                     <div>
-                      <h3 className="font-semibold text-lg text-gray-900">{selectedPost.user.name}</h3>
-                      <p className="text-sm text-gray-500">{selectedPost.user.location}</p>
+                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white transition-colors duration-500">{selectedPost.user.name}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">{selectedPost.user.location}</p>
                     </div>
                   </div>
                   <button
                     onClick={closeEnlargedPost}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                   >
                     <X className="h-6 w-6" />
                   </button>
@@ -1014,11 +1014,11 @@ const Community = () => {
               </div>
 
               {/* Post Content */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {/* Trip Title and Details */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">{selectedPost.trip.name}</h2>
-                  <div className="flex items-center space-x-6 text-sm text-gray-500 mb-4">
+                <div className="mb-4 sm:mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 transition-colors duration-500">{selectedPost.trip.name}</h2>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4 transition-colors duration-500">
                     <div className="flex items-center space-x-2">
                       <MapPin className="h-4 w-4" />
                       <span>{selectedPost.trip.location}</span>
@@ -1036,13 +1036,13 @@ const Community = () => {
                       <span>{selectedPost.trip.rating}</span>
                     </div>
                   </div>
-                  <p className="text-gray-700 leading-relaxed">{selectedPost.content}</p>
+                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed transition-colors duration-500">{selectedPost.content}</p>
                 </div>
 
                 {/* Images */}
                 {selectedPost.images.length > 0 && (
-                  <div className="mb-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="mb-4 sm:mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {selectedPost.images.map((image, index) => (
                         <img
                           key={index}
@@ -1057,12 +1057,12 @@ const Community = () => {
 
                 {/* Tags */}
                 {selectedPost.tags.length > 0 && (
-                  <div className="mb-6">
+                  <div className="mb-4 sm:mb-6">
                     <div className="flex flex-wrap gap-2">
                       {selectedPost.tags.map((tag, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full"
+                          className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full transition-colors duration-500"
                         >
                           #{tag}
                         </span>
@@ -1072,7 +1072,7 @@ const Community = () => {
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between mb-4 sm:mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-500">
                   <div className="flex items-center space-x-6">
                     <button
                       onClick={() => handleLike(selectedPost.id)}
@@ -1081,7 +1081,7 @@ const Community = () => {
                       <Heart className="h-5 w-5" />
                       <span className="font-medium">{selectedPost.likes}</span>
                     </button>
-                    <div className="flex items-center space-x-2 text-gray-500">
+                    <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 transition-colors duration-500">
                       <MessageCircle className="h-5 w-5" />
                       <span className="font-medium">{selectedPost.comments?.length || 0}</span>
                     </div>
@@ -1093,15 +1093,15 @@ const Community = () => {
                       <span className="font-medium">Share</span>
                     </button>
                   </div>
-                  <span className="text-sm text-gray-400">{selectedPost.createdAt}</span>
+                  <span className="text-sm text-gray-400 dark:text-gray-500 transition-colors duration-500">{selectedPost.createdAt}</span>
                 </div>
 
                 {/* Comments Section */}
-                <div className="border-t border-gray-200 pt-6">
-                  <h4 className="font-semibold text-gray-900 mb-4">Comments</h4>
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-500">Comments</h4>
                   
                   {/* Comment Input */}
-                  <div className="flex space-x-3 mb-6">
+                  <div className="flex space-x-3 mb-4 sm:mb-6">
                     <img
                       src={user?.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
                       alt="Your avatar"
@@ -1113,13 +1113,13 @@ const Community = () => {
                         onChange={(e) => setCommentText(e.target.value)}
                         placeholder="Add a comment..."
                         rows={2}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none transition-colors duration-500"
                       />
                       <div className="flex justify-end mt-2">
                         <button
                           onClick={handleComment}
                           disabled={!commentText.trim()}
-                          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                         >
                           Comment
                         </button>
@@ -1137,18 +1137,18 @@ const Community = () => {
                           className="w-8 h-8 rounded-full object-cover"
                         />
                         <div className="flex-1">
-                          <div className="bg-gray-50 rounded-xl p-3">
+                          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-3 transition-colors duration-500">
                             <div className="flex items-center space-x-2 mb-1">
-                              <span className="font-semibold text-sm text-gray-900">{comment.user.name}</span>
-                              <span className="text-xs text-gray-400">{comment.createdAt}</span>
+                              <span className="font-semibold text-sm text-gray-900 dark:text-white transition-colors duration-500">{comment.user.name}</span>
+                              <span className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">{comment.createdAt}</span>
                             </div>
-                            <p className="text-gray-700 text-sm">{comment.content}</p>
+                            <p className="text-gray-700 dark:text-gray-300 text-sm transition-colors duration-500">{comment.content}</p>
                           </div>
                         </div>
                       </div>
                     ))}
                     {(!selectedPost.comments || selectedPost.comments.length === 0) && (
-                      <p className="text-gray-500 text-center py-8">No comments yet. Be the first to comment!</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-center py-8 transition-colors duration-500">No comments yet. Be the first to comment!</p>
                     )}
                   </div>
                 </div>
