@@ -1,14 +1,14 @@
+import dotenv from 'dotenv';
+// Load environment variables at the very top
+dotenv.config();
+
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import session from 'express-session';
 import passport from 'passport';
 import { sequelize } from './config/db.js';
-
-// Load environment variables
-dotenv.config();
 
 // Import Models to sync them
 import './models/userModel.js';
@@ -17,6 +17,7 @@ import City from './models/cityModel.js';
 import './models/activityModel.js';
 import './models/communityPostModel.js';
 import './models/commentModel.js';
+import './models/aiTripModel.js'; // <-- Added sync for the new model
 
 // Route and Config imports
 import authRoutes from './routes/authRoutes.js';

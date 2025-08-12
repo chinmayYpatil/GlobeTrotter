@@ -17,6 +17,7 @@ const CreateTrip = lazy(() => import('./screens/CreateTrip'));
 const MyTrips = lazy(() => import('./screens/MyTrips'));
 const ItineraryBuilder = lazy(() => import('./screens/ItineraryBuilder'));
 const ItineraryView = lazy(() => import('./screens/ItineraryView'));
+const ViewTrip = lazy(() => import('./screens/ViewTrip')); // Import the unified ViewTrip component
 const CitySearch = lazy(() => import('./screens/CitySearch'));
 const ActivitySearch = lazy(() => import('./screens/ActivitySearch'));
 const TripBudget = lazy(() => import('./screens/TripBudget'));
@@ -81,12 +82,20 @@ function App() {
                       <Route path="/profile/edit" element={<ProtectedRoute><ProfileEdit /></ProtectedRoute>} />
                       <Route path="/create-trip" element={<ProtectedRoute><CreateTrip /></ProtectedRoute>} />
                       <Route path="/my-trips" element={<ProtectedRoute><MyTrips /></ProtectedRoute>} />
+                      
+                      {/* UPDATED: Unified trip viewing route for both manual and AI trips */}
+                      <Route path="/trip/:id/view" element={<ProtectedRoute><ViewTrip /></ProtectedRoute>} />
+                      <Route path="/view-trip/:id" element={<ProtectedRoute><ViewTrip /></ProtectedRoute>} />
+                      
+                      {/* Manual trip building routes */}
                       <Route path="/trip/:id/build" element={<ProtectedRoute><ItineraryBuilder /></ProtectedRoute>} />
-                      <Route path="/trip/:id/view" element={<ProtectedRoute><ItineraryView /></ProtectedRoute>} />
                       <Route path="/trip/:id/cities" element={<ProtectedRoute><CitySearch /></ProtectedRoute>} />
                       <Route path="/trip/:id/activities" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
                       <Route path="/trip/:id/budget" element={<ProtectedRoute><TripBudget /></ProtectedRoute>} />
                       <Route path="/trip/:id/calendar" element={<ProtectedRoute><TripCalendar /></ProtectedRoute>} />
+                      
+                      {/* AI Trip Generation */}
+                      <Route path="/build-trip-ai" element={<ProtectedRoute><BuildTripAI /></ProtectedRoute>} />
                       
                       {/* Standalone Search Routes */}
                       <Route path="/activity-search" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
@@ -97,7 +106,9 @@ function App() {
                       
                       {/* Public Route */}
                       <Route path="/shared/:shareId" element={<SharedItinerary />} />
-                      <Route path="/build-trip-ai" element={<ProtectedRoute><BuildTripAI /></ProtectedRoute>} />
+                      
+                      {/* Fallback route for any unmatched paths */}
+                      <Route path="*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     </Routes>
                   </div>
                 </Suspense>

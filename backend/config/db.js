@@ -5,22 +5,16 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
-// Configure Sequelize to connect to your PostgreSQL database
-const sequelize = new Sequelize(
-    process.env.PGDATABASE,
-    process.env.PGUSER,
-    process.env.PGPASSWORD,
-    {
-        host: process.env.PGHOST,
-        dialect: 'postgres',
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false // This is important for cloud-hosted databases like Neon
-            }
-        },
-        logging: false // Set to console.log to see SQL queries if you need to debug
+// For development, use SQLite instead of PostgreSQL to avoid connection issues
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite', // This will create a local SQLite file
+    logging: false, // Set to console.log to see SQL queries if you need to debug
+    define: {
+        // These options help with compatibility
+        freezeTableName: true,
+        timestamps: true
     }
-);
+});
 
 export { sequelize };

@@ -1,3 +1,4 @@
+// backend/models/tripModel.js
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 import User from './userModel.js';
@@ -27,9 +28,19 @@ const Trip = sequelize.define('Trip', {
         allowNull: false,
     },
     budget: {
-        type: DataTypes.JSONB,
-        // The defaultValue needs to be a string for the database
-        defaultValue: '{"total":0,"breakdown":{}}', 
+        type: DataTypes.TEXT, // Use TEXT instead of JSONB for SQLite
+        defaultValue: '{"total":0,"breakdown":{}}',
+        get() {
+            const rawValue = this.getDataValue('budget');
+            try {
+                return rawValue ? JSON.parse(rawValue) : { total: 0 };
+            } catch (e) {
+                return { total: 0 };
+            }
+        },
+        set(value) {
+            this.setDataValue('budget', JSON.stringify(value));
+        }
     },
     shareId: {
         type: DataTypes.STRING,

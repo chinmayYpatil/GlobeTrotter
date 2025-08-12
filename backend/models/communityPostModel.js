@@ -1,3 +1,4 @@
+// backend/models/communityPostModel.js
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 import User from './userModel.js';
@@ -27,8 +28,20 @@ const CommunityPost = sequelize.define('CommunityPost', {
     tripRating: {
         type: DataTypes.FLOAT,
     },
+    // Convert array to TEXT for SQLite compatibility
     images: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.TEXT,
+        get() {
+            const rawValue = this.getDataValue('images');
+            try {
+                return rawValue ? JSON.parse(rawValue) : [];
+            } catch (e) {
+                return [];
+            }
+        },
+        set(value) {
+            this.setDataValue('images', JSON.stringify(value || []));
+        }
     },
     category: {
         type: DataTypes.STRING,
@@ -45,8 +58,20 @@ const CommunityPost = sequelize.define('CommunityPost', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
+    // Convert array to TEXT for SQLite compatibility
     tags: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.TEXT,
+        get() {
+            const rawValue = this.getDataValue('tags');
+            try {
+                return rawValue ? JSON.parse(rawValue) : [];
+            } catch (e) {
+                return [];
+            }
+        },
+        set(value) {
+            this.setDataValue('tags', JSON.stringify(value || []));
+        }
     },
 });
 

@@ -9,12 +9,26 @@ const AITrip = sequelize.define('AITrip', {
         primaryKey: true,
     },
     tripData: {
-        type: DataTypes.JSONB,
+        type: DataTypes.TEXT, // Use TEXT instead of JSONB for SQLite
         allowNull: false,
+        get() {
+            const rawValue = this.getDataValue('tripData');
+            return rawValue ? JSON.parse(rawValue) : null;
+        },
+        set(value) {
+            this.setDataValue('tripData', JSON.stringify(value));
+        }
     },
     userSelection: {
-        type: DataTypes.JSONB,
+        type: DataTypes.TEXT, // Use TEXT instead of JSONB for SQLite
         allowNull: false,
+        get() {
+            const rawValue = this.getDataValue('userSelection');
+            return rawValue ? JSON.parse(rawValue) : null;
+        },
+        set(value) {
+            this.setDataValue('userSelection', JSON.stringify(value));
+        }
     },
     userEmail: {
         type: DataTypes.STRING,
