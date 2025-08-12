@@ -1,97 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import Layout from '../components/Layout';
-import AIGenerationLoader from '../components/AIGenerationLoader';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { generateAITrip } from '../services/aiTripService';
+import { useTrips } from '../contexts/TripContext';
+import Layout from '../components/Layout';
+import { Sparkles, MapPin, Calendar, DollarSign, Users, Search, ChevronDown, ArrowRight, Loader2 } from 'lucide-react';
+import { generateAITrip, searchCities } from '../services/aiTripService';
+import AIGenerationLoader from '../components/AIGenerationLoader';
 
 const BuildTripAI = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    destination: '',
-    noOfDays: '',
-    budget: '',
-    traveler: '',
-    startDate: '',
-    endDate: ''
-  });
+    const navigate = useNavigate();
+    const { user } = useAuth();
+    const { addTrip } = useTrips();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [step, setStep] = useState(1);
 
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+    // Form State
+    const [destination, setDestination] = useState('');
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [citySuggestions, setCitySuggestions] = useState([]);
+    const [days, setDays] = useState('3-5');
+    const [budget, setBudget] = useState('moderate');
+    const [travelers, setTravelers] = useState('solo');
 
-  const OnGenerateTrip = async () => {
-    if (!formData.destination || !formData.noOfDays || !formData.budget || !formData.traveler || !formData.startDate || !formData.endDate) {
-      alert('Please fill in all fields');
-      return;
-    }
+    // Debounce search
+    useEffect(() => {
+        if (destination.length > 2) {
+            const handler = setTimeout(async () => {
+                const result = await searchCities(destination);
+                if (result.success) {
+                    setCitySuggestions(result.data);
+                    setShowSuggestions(true);
+                }
+            }, 300);
+            return () => clearTimeout(handler);
+        } else {
+            setShowSuggestions(false);
+        }
+    }, [destination]);
 
-    // Validate dates
-    const startDate = new Date(formData.startDate);
-    const endDate = new Date(formData.endDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const handleGenerateTrip = async () => {
+        if (!destination) {
+            setError('Please enter a destination.');
+            return;
+        }
+        setLoading(true);
+        setError('');
 
-    if (startDate < today) {
-      alert('Start date cannot be in the past');
-      return;
-    }
+        const tripData = {
+            destination,
+            noOfDays: days,
+            budget,
+            traveler: travelers,
+        };
 
-    if (endDate <= startDate) {
-      alert('End date must be after start date');
-      return;
-    }
+        const result = await generateAITrip(tripData);
 
-    setLoading(true);
-    try {
-      const result = await generateAITrip({
-        ...formData,
-        userId: user.uid
-      });
-      
-      if (result.success) {
-        navigate(`/trip/${result.tripId}/view`);
-      } else {
-        alert(result.error || 'Failed to generate trip');
-      }
-    } catch (error) {
-      console.error('Error generating trip:', error);
-      alert('An error occurred while generating your trip. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+        setLoading(false);
+        if (result.success && result.trip) {
+            addTrip(result.trip);
+            navigate(`/trip/${result.trip.id}/view`);
+        } else {
+            setError(result.error || 'An unexpected error occurred while generating the trip.');
+        }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
 
   return (
     <Layout title="AI Trip Generator">
       {loading && <AIGenerationLoader />}
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-500">
+      <div className="min-h-screen bg-gray-50 py-8">
         <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5">
           <h2 className="text-[3rem] text-[#ff7043] font-extrabold mb-5 uppercase text-center">
             Tell us your travel preferences 🏕️🌴
           </h2>
-          <p className="text-[#666] dark:text-gray-300 text-[1.2rem] mt-2 mb-10 max-w-[800px] leading-relaxed text-center mx-auto transition-colors duration-500">
+          <p className="text-[#666] text-[1.2rem] mt-2 mb-10 max-w-[800px] leading-relaxed text-center mx-auto">
             Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.
           </p>
         </div>
 
         {/* Destination Dropdown */}
         <div className="destination-select text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             What is your choice of destination?
           </h3>
-          <div className="w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors duration-500">
+          <div className="w-full mx-auto bg-gray-100 rounded-lg">
             <select
               id="destination"
               value={formData.destination || ''}
               onChange={(e) => handleInputChange('destination', e.target.value)}
-              className="w-full p-3 mt-1 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
+              className="w-full p-3 mt-1 border-2 border-gray-300 rounded-lg text-base bg-white"
             >
               <option value="">Select a destination</option>
               <option value="Kutch">Kutch</option>
@@ -131,7 +134,7 @@ const BuildTripAI = () => {
           </div>
 
           {formData.destination && (
-            <p className="mt-4 text-lg text-green-600 dark:text-green-400 font-medium transition-colors duration-500">
+            <p className="mt-4 text-lg text-green-600 font-medium">
               Selected Destination: {formData.destination}
             </p>
           )}
@@ -139,15 +142,15 @@ const BuildTripAI = () => {
 
         {/* Days Input */}
         <div className="select-days text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             How many days are you planning your trip?
           </h3>
-          <div className="w-full mx-auto bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors duration-500">
+          <div className="w-full mx-auto bg-gray-100 rounded-lg">
             <input
               type="text"
               id="day"
               placeholder="Ex., 3"
-              className="w-full p-3 mt-1 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
+              className="w-full p-3 mt-1 border-2 border-gray-300 rounded-lg text-base"
               onChange={(e) => handleInputChange('noOfDays', e.target.value)}
             />
           </div>
@@ -155,23 +158,23 @@ const BuildTripAI = () => {
 
         {/* Date Selection */}
         <div className="date-selection text-center my-10">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 transition-colors duration-500">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             When are you planning to travel?
           </h3>
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
             <div className="w-full md:w-48">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
               <input
                 type="date"
-                className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
+                className="w-full p-3 border-2 border-gray-300 rounded-lg text-base"
                 onChange={(e) => handleInputChange('startDate', e.target.value)}
               />
             </div>
             <div className="w-full md:w-48">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">End Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
               <input
                 type="date"
-                className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-base bg-white dark:bg-gray-700 dark:text-white transition-colors duration-500"
+                className="w-full p-3 border-2 border-gray-300 rounded-lg text-base"
                 onChange={(e) => handleInputChange('endDate', e.target.value)}
               />
             </div>
@@ -180,7 +183,7 @@ const BuildTripAI = () => {
 
         {/* Budget Selection */}
         <div className="budget my-10">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center transition-colors duration-500">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
             What is your budget?
           </h3>
           <div className="flex justify-center gap-8 mt-5 flex-wrap">
@@ -190,7 +193,7 @@ const BuildTripAI = () => {
                 className={`p-6 w-[300px] text-center rounded-xl shadow-md cursor-pointer transition-all duration-300 hover:-translate-y-1 
                   ${formData?.budget === type
                     ? 'bg-orange-500 text-white border-3'
-                    : 'bg-white dark:bg-gray-700 text-black dark:text-white hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white'}`}
+                    : 'bg-white text-black hover:bg-orange-500 hover:text-white'}`}
                 onClick={() => handleInputChange('budget', type)}
               >
                 <h2 className="text-2xl">
@@ -211,7 +214,7 @@ const BuildTripAI = () => {
 
         {/* Travel Group Selection */}
         <div className="plan-to-travel my-10">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center transition-colors duration-500">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">
             Who do you plan on traveling with on your next adventure?
           </h3>
           <div className="flex justify-around flex-wrap gap-8">
@@ -226,7 +229,7 @@ const BuildTripAI = () => {
                 className={`p-6 w-[300px] text-center rounded-xl shadow-md cursor-pointer transition-all duration-300 hover:-translate-y-1 
                   ${formData?.traveler === opt.people
                     ? 'bg-green-500 text-white border-3'
-                    : 'bg-white dark:bg-gray-700 text-black dark:text-white hover:bg-green-500 hover:text-white dark:hover:bg-green-500 dark:hover:text-white'}`}
+                    : 'bg-white text-black hover:bg-green-500 hover:text-white'}`}
                 onClick={() => handleInputChange('traveler', opt.people)}
               >
                 <h2 className="text-2xl">{opt.icon}</h2>
@@ -237,21 +240,31 @@ const BuildTripAI = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex justify-end px-5 sm:px-10 pb-5">
-          <button 
-            disabled={loading}
-            className="bg-[#ff7043] text-white py-3 px-8 rounded-full font-bold hover:bg-[#f4511e] transition-colors duration-300 shadow-md"
-            onClick={OnGenerateTrip}
-          >
-            {loading ? 
-              <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/> : 
-              'Generate Trip'
-            }
-          </button>
-        </div>
-      </div>
-    </Layout>
-  );
+                        {/* Submit Button */}
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="pt-4">
+                            <button
+                                onClick={handleGenerateTrip}
+                                disabled={loading || !destination}
+                                className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-bold text-lg py-4 px-4 rounded-2xl hover:shadow-xl hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center space-x-3"
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="w-6 h-6 animate-spin" />
+                                        <span>Generating...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Sparkles className="w-6 h-6" />
+                                        <span>Generate My Trip</span>
+                                    </>
+                                )}
+                            </button>
+                        </motion.div>
+                    </div>
+                </div>
+            </motion.div>
+        </Layout>
+    );
 };
 
 export default BuildTripAI;

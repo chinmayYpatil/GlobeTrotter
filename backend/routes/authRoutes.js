@@ -7,9 +7,9 @@ import {
     loginUser, 
     getCurrentUser,
     updateUserProfile,
-    uploadAvatar // Import the new controller function
+    uploadAvatar
 } from "../controllers/authController.js";
-import { ensureAuth } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -20,9 +20,8 @@ router.get("/logout", logoutUser);
 
 // Profile routes
 router.get("/me", getCurrentUser);
-router.put("/profile", ensureAuth, updateUserProfile);
-// Add the new route for avatar uploads
-router.post("/upload-avatar", ensureAuth, uploadAvatar); 
+router.put("/profile", protect, updateUserProfile);
+router.post("/upload-avatar", protect, uploadAvatar); 
 
 // Google OAuth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

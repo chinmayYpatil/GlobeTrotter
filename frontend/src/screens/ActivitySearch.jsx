@@ -1,172 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTrips } from '../contexts/TripContext';
 import Layout from '../components/Layout';
-import { 
-  Search, 
-  Clock, 
-  DollarSign, 
-  Star, 
-  Plus, 
-  Filter, 
-  MapPin, 
-  Grid3X3, 
-  List, 
+import {
+  Search,
+  Clock,
+  DollarSign,
+  Star,
+  Plus,
+  Filter,
+  MapPin,
+  Grid3X3,
+  List,
   SlidersHorizontal,
   X,
   Heart,
   Share2,
-  Calendar,
   Users,
   TrendingUp,
-  ArrowLeft,
-  MessageCircle
+  ArrowLeft
 } from 'lucide-react';
+import activityService from '../services/activityService';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const ActivitySearch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const stopId = searchParams.get('stopId');
-  
-  const { getTripById, searchActivities, updateTripStop } = useTrips();
-  const [searchQuery, setSearchQuery] = useState('Paragliding');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+
+  const { getTripById, updateTripStop } = useTrips();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     type: 'all',
     maxCost: '',
     minRating: '',
-    duration: 'all',
-    groupSize: 'all',
     sortBy: 'relevance'
   });
-  
-  // Check if this is standalone access or trip-specific
+
   const isStandalone = !id;
   const trip = isStandalone ? null : getTripById(id);
   const stop = trip?.stops.find(s => s.id === stopId);
-  
-  // Mock activities data for demonstration
-  const [activities, setActivities] = useState([
-    {
-      id: 1,
-      name: "Agile Spoonbill Paragliding",
-      description: "Experience the thrill of paragliding over stunning mountain landscapes with certified instructors. Perfect for beginners and experienced flyers alike.",
-      type: "adventure",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 120,
-      duration: 3,
-      rating: 4.8,
-      groupSize: "2-6 people",
-      location: "Mountain Peak Resort",
-      availability: "Daily",
-      difficulty: "Beginner"
-    },
-    {
-      id: 2,
-      name: "Alive Bat Adventure Tours",
-      description: "Explore hidden caves and discover the fascinating world of bats with expert guides. Educational and thrilling experience for nature lovers.",
-      type: "adventure",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 85,
-      duration: 2,
-      rating: 4.6,
-      groupSize: "4-8 people",
-      location: "Crystal Cave System",
-      availability: "Weekends",
-      difficulty: "Intermediate"
-    },
-    {
-      id: 3,
-      name: "Sunset Mountain Hiking",
-      description: "Guided sunset hike to the mountain summit with panoramic views and photography opportunities. Includes refreshments and safety equipment.",
-      type: "leisure",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 65,
-      duration: 4,
-      rating: 4.9,
-      groupSize: "6-12 people",
-      location: "Mountain Trailhead",
-      availability: "Daily",
-      difficulty: "Beginner"
-    },
-    {
-      id: 4,
-      name: "Cultural Village Tour",
-      description: "Immerse yourself in local culture with guided tours of traditional villages, artisan workshops, and authentic cuisine tasting.",
-      type: "cultural",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 45,
-      duration: 5,
-      rating: 4.7,
-      groupSize: "8-15 people",
-      location: "Heritage Village",
-      availability: "Daily",
-      difficulty: "All Levels"
-    },
-    {
-      id: 5,
-      name: "River Rafting Experience",
-      description: "White water rafting adventure through scenic river canyons. Professional guides ensure safety while providing an exhilarating experience.",
-      type: "adventure",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 95,
-      duration: 3,
-      rating: 4.8,
-      groupSize: "6-8 people",
-      location: "Rapid River",
-      availability: "Seasonal",
-      difficulty: "Intermediate"
-    },
-    {
-      id: 6,
-      name: "Historical Castle Exploration",
-      description: "Step back in time with guided tours of ancient castles, including hidden passages, royal chambers, and fascinating historical stories.",
-      type: "historical",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 35,
-      duration: 2,
-      rating: 4.5,
-      groupSize: "10-20 people",
-      location: "Royal Castle",
-      availability: "Daily",
-      difficulty: "All Levels"
-    },
-    {
-      id: 7,
-      name: "Gourmet Food Safari",
-      description: "Culinary adventure through local markets, street food stalls, and hidden restaurants. Taste authentic flavors and learn cooking secrets.",
-      type: "food",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 75,
-      duration: 4,
-      rating: 4.9,
-      groupSize: "4-8 people",
-      location: "Food District",
-      availability: "Daily",
-      difficulty: "All Levels"
-    },
-    {
-      id: 8,
-      name: "Artisan Craft Workshop",
-      description: "Learn traditional crafts from master artisans. Create your own souvenirs while supporting local craftsmanship and cultural heritage.",
-      type: "cultural",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
-      cost: 55,
-      duration: 3,
-      rating: 4.6,
-      groupSize: "6-10 people",
-      location: "Craft Center",
-      availability: "Weekdays",
-      difficulty: "All Levels"
-    }
-  ]);
 
-  const [filteredActivities, setFilteredActivities] = useState(activities);
-  
+  useEffect(() => {
+    const fetchActivities = async () => {
+      setLoading(true);
+      const params = {
+        query: searchQuery,
+        ...filters
+      };
+      const result = await activityService.searchActivities(params);
+      if (result.success) {
+        setActivities(result.data);
+      }
+      setLoading(false);
+    };
+    fetchActivities();
+  }, [searchQuery, filters]);
+
   const activityTypes = [
     { value: 'all', label: 'All Types', icon: '🌟' },
     { value: 'adventure', label: 'Adventure', icon: '🏔️' },
@@ -185,50 +81,10 @@ const ActivitySearch = () => {
     { value: 'duration', label: 'Duration' }
   ];
 
-  useEffect(() => {
-    filterActivities();
-  }, [searchQuery, filters, activities]);
-
-  const filterActivities = () => {
-    let filtered = activities.filter(activity => {
-      const matchesSearch = activity.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           activity.description.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesType = filters.type === 'all' || activity.type === filters.type;
-      const matchesCost = !filters.maxCost || activity.cost <= parseInt(filters.maxCost);
-      const matchesRating = !filters.minRating || activity.rating >= parseFloat(filters.minRating);
-      
-      return matchesSearch && matchesType && matchesCost && matchesRating;
-    });
-
-    // Apply sorting
-    switch (filters.sortBy) {
-      case 'price-low':
-        filtered.sort((a, b) => a.cost - b.cost);
-        break;
-      case 'price-high':
-        filtered.sort((a, b) => b.cost - a.cost);
-        break;
-      case 'rating':
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'duration':
-        filtered.sort((a, b) => a.duration - b.duration);
-        break;
-      default:
-        // Keep relevance order
-        break;
-    }
-
-    setFilteredActivities(filtered);
-  };
-
   const handleAddActivity = (activity) => {
     if (isStandalone) {
-      // If standalone, navigate to create trip or show message
       navigate('/create-trip');
     } else if (stop) {
-      // If in trip context, add to trip
       const updatedActivities = [...(stop.activities || []), activity.id];
       updateTripStop(id, stopId, { activities: updatedActivities });
       navigate(`/trip/${id}/build`);
@@ -240,8 +96,6 @@ const ActivitySearch = () => {
       type: 'all',
       maxCost: '',
       minRating: '',
-      duration: 'all',
-      groupSize: 'all',
       sortBy: 'relevance'
     });
   };
@@ -267,26 +121,28 @@ const ActivitySearch = () => {
   };
 
   return (
-    <Layout title="Activity Search" showBack={true} backTo="/">
+    <Layout 
+      title="Activity Search" 
+      showBack={getBackButton().show} 
+      backTo={getBackButton().backTo}
+    >
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="space-y-4 sm:space-y-6"
       >
-        {/* Search Header */}
-        <motion.div variants={itemVariants} className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl">
-          <div className="text-center mb-4 sm:mb-6">
-            <div className="flex items-center justify-center mb-3 sm:mb-4">
-              <Search className="h-8 w-8 sm:h-12 sm:w-12 mr-2 sm:mr-3" />
-              <h1 className="text-2xl sm:text-4xl font-bold">Find Amazing Activities</h1>
-            </div>
-            <p className="text-purple-100 text-sm sm:text-xl max-w-2xl mx-auto">
-              Discover exciting activities, tours, and experiences for your next adventure
+        {/* Enhanced Search Header */}
+        <motion.div variants={itemVariants} className="bg-gradient-to-r from-blue-600 to-teal-600 rounded-3xl p-8 text-white shadow-xl">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl font-bold mb-2">Discover Amazing Activities</h1>
+            <p className="text-blue-100 text-lg">
+              {isStandalone 
+                ? "Find the perfect experiences for your next adventure" 
+                : "Find the perfect experiences for your trip"
+              }
             </p>
           </div>
-          
-          {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-400 h-5 w-5 sm:h-6 sm:w-6" />
             <input
@@ -299,23 +155,22 @@ const ActivitySearch = () => {
           </div>
         </motion.div>
 
-        {/* Filters */}
-        <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 transition-colors duration-500">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-            {/* Left Filters */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
+        {/* Controls Bar */}
+        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            {/* Left Controls */}
+            <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl transition-all text-sm sm:text-base ${
-                  showFilters
-                    ? 'bg-purple-600 text-white shadow-lg'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all ${
+                  showFilters 
+                    ? 'bg-blue-600 text-white shadow-lg' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 <SlidersHorizontal className="h-4 w-4" />
                 <span>Filters</span>
               </button>
-              
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
@@ -328,15 +183,13 @@ const ActivitySearch = () => {
                 ))}
               </select>
             </div>
-
-            {/* Right Controls */}
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'grid'
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
-                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
+                  viewMode === 'grid' 
+                    ? 'bg-blue-100 text-blue-600' 
+                    : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
                 <Grid3X3 className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -344,17 +197,15 @@ const ActivitySearch = () => {
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${
-                  viewMode === 'list'
-                    ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
-                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
+                  viewMode === 'list' 
+                    ? 'bg-blue-100 text-blue-600' 
+                    : 'text-gray-400 hover:text-gray-600'
                 }`}
               >
                 <List className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>
-
-          {/* Filters Panel */}
           <AnimatePresence>
             {showFilters && (
               <motion.div
@@ -363,8 +214,8 @@ const ActivitySearch = () => {
                 exit={{ opacity: 0, height: 0 }}
                 className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-500"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {/* Category Filter */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Activity Type */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Category</label>
                     <select
@@ -380,7 +231,7 @@ const ActivitySearch = () => {
                     </select>
                   </div>
 
-                  {/* Price Range Filter */}
+                  {/* Max Cost */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Price Range</label>
                     <select
@@ -396,7 +247,7 @@ const ActivitySearch = () => {
                     </select>
                   </div>
 
-                  {/* Duration Filter */}
+                  {/* Min Rating */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-500">Duration</label>
                     <select
@@ -411,8 +262,6 @@ const ActivitySearch = () => {
                       ))}
                     </select>
                   </div>
-
-                  {/* Clear Filters */}
                   <div className="flex items-end">
                     <button
                       onClick={clearFilters}
@@ -428,28 +277,26 @@ const ActivitySearch = () => {
         </motion.div>
 
         {/* Results Header */}
-        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-500">
-            Activities ({filteredActivities.length})
+        <motion.div variants={itemVariants} className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-900">
+            Results ({filteredActivities.length})
           </h2>
-          <div className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+          <div className="text-sm text-gray-500">
             Showing {filteredActivities.length} of {activities.length} activities
           </div>
         </motion.div>
 
         {/* Activities Grid/List */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredActivities.map((activity) => (
               <motion.div
                 key={activity.id}
                 variants={itemVariants}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 cursor-pointer"
-                onClick={() => openActivityDetails(activity)}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300"
               >
-                {/* Activity Image */}
-                <div className="h-40 sm:h-48 relative overflow-hidden group">
+                <div className="h-48 relative overflow-hidden group">
                   <img
                     src={activity.image}
                     alt={activity.name}
@@ -457,179 +304,141 @@ const ActivitySearch = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   
-                  {/* Category Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-gray-800 dark:text-white transition-colors duration-500">
-                      {categories.find(c => c.value === activity.category)?.icon} {activity.category}
+                  {/* Activity Type Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-800">
+                      {activityTypes.find(t => t.value === activity.type)?.icon} {activity.type}
                     </span>
                   </div>
 
-                  {/* Rating */}
-                  <div className="absolute top-3 right-3">
-                    <div className="bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-bold flex items-center">
-                      <Star className="h-3 w-3 mr-1 fill-current" />
-                      {activity.rating}
-                    </div>
+                  {/* Action Buttons */}
+                  <div className="absolute top-4 right-4 flex space-x-2">
+                    <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors">
+                      <Heart className="h-4 w-4 text-white" />
+                    </button>
+                    <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors">
+                      <Share2 className="h-4 w-4 text-white" />
+                    </button>
                   </div>
 
-                  {/* Activity Info Overlay */}
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <h3 className="text-white font-bold text-base sm:text-lg mb-1">{activity.name}</h3>
-                    <p className="text-white/90 text-xs sm:text-sm flex items-center">
-                      <MapPin className="h-3 w-3 mr-1" />
-                      {activity.location}
-                    </p>
+                  {/* Activity Name */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-white font-bold text-xl mb-1">{activity.name}</h3>
+                    <p className="text-white/90 text-sm">{activity.location}</p>
                   </div>
                 </div>
                 
-                <div className="p-3 sm:p-4">
+                <div className="p-6">
+                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">{activity.description}</p>
+                  
                   {/* Activity Details */}
-                  <p className="text-gray-600 dark:text-gray-300 mb-3 text-xs sm:text-sm leading-relaxed line-clamp-2 transition-colors duration-500">
-                    {activity.description}
-                  </p>
-                  
-                  {/* Activity Info */}
-                  <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-3 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-500">
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{activity.duration}</span>
+                  <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="h-4 w-4 text-blue-500" />
+                      <span className="text-gray-600">{activity.duration}h</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <DollarSign className="h-3 w-3" />
-                      <span>{activity.price}</span>
+                    <div className="flex items-center space-x-2">
+                      <DollarSign className="h-4 w-4 text-green-500" />
+                      <span className="text-gray-600">${activity.cost}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-3 w-3" />
-                      <span>{activity.maxGroupSize}</span>
+                    <div className="flex items-center space-x-2">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      <span className="text-gray-600">{activity.rating}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Star className="h-3 w-3" />
-                      <span>{activity.rating}</span>
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-4 w-4 text-purple-500" />
+                      <span className="text-gray-600">{activity.groupSize}</span>
                     </div>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1 sm:gap-2 mb-3">
-                    {activity.tags.slice(0, 2).map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
                   </div>
                   
-                  {/* Action Buttons */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleLike(activity.id); }}
-                        className="flex items-center space-x-1 hover:text-red-500 transition-colors"
-                      >
-                        <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span>{activity.likes}</span>
-                      </button>
-                      <div className="flex items-center space-x-1">
-                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span>{activity.reviews}</span>
-                      </div>
-                    </div>
-                    <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
-                      {activity.createdAt}
-                    </div>
-                  </div>
+                  {/* Add Activity Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleAddActivity(activity)}
+                    className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-3 px-4 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all flex items-center justify-center space-x-2 shadow-lg"
+                  >
+                    {isStandalone ? (
+                      <>
+                        <Plus className="h-4 w-4" />
+                        <span>Plan This Activity</span>
+                      </>
+                    ) : stop?.activities?.includes(activity.id) ? (
+                      <span>Already Added</span>
+                    ) : (
+                      <>
+                        <Plus className="h-4 w-4" />
+                        <span>Add to Trip</span>
+                      </>
+                    )}
+                  </motion.button>
                 </div>
               </motion.div>
             ))}
           </div>
         ) : (
           /* List View */
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4">
             {filteredActivities.map((activity) => (
               <motion.div
                 key={activity.id}
                 variants={itemVariants}
-                whileHover={{ x: 2 }}
-                className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all cursor-pointer"
-                onClick={() => openActivityDetails(activity)}
+                whileHover={{ x: 4 }}
+                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all"
               >
-                <div className="flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
-                  {/* Activity Image */}
+                <div className="flex items-center space-x-6">
                   <img
                     src={activity.image}
                     alt={activity.name}
-                    className="w-full sm:w-32 h-32 rounded-lg sm:rounded-xl object-cover flex-shrink-0"
+                    className="w-24 h-24 rounded-xl object-cover"
                   />
                   
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
-                      <div className="flex-1">
-                        {/* Activity Title and Category */}
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex-1">
-                            <h3 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white mb-1 transition-colors duration-500">{activity.name}</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2 transition-colors duration-500">{activity.location}</p>
-                          </div>
-                          <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs px-2 py-1 rounded-full font-medium ml-2 transition-colors duration-500">
-                            {categories.find(c => c.value === activity.category)?.icon} {activity.category}
-                          </span>
-                        </div>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="font-bold text-xl text-gray-900 mb-2">{activity.name}</h3>
+                        <p className="text-gray-600 mb-3">{activity.description}</p>
                         
-                        <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm transition-colors duration-500">{activity.description}</p>
-                        
-                        {/* Activity Details */}
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                        <div className="flex items-center space-x-6 text-sm text-gray-500">
                           <div className="flex items-center space-x-2">
-                            <Clock className="h-4 w-4" />
-                            <span>{activity.duration}</span>
+                            <Clock className="h-4 w-4 text-blue-500" />
+                            <span>{activity.duration}h</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <DollarSign className="h-4 w-4" />
-                            <span>{activity.price}</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Users className="h-4 w-4" />
-                            <span>{activity.maxGroupSize}</span>
+                            <DollarSign className="h-4 w-4 text-green-500" />
+                            <span>${activity.cost}</span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <Star className="h-4 w-4 text-yellow-500" />
                             <span>{activity.rating}</span>
                           </div>
-                        </div>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {activity.tags.slice(0, 4).map((tag, index) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full transition-colors duration-500"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-4 w-4 text-purple-500" />
+                            <span>{activity.location}</span>
+                          </div>
                         </div>
                       </div>
                       
-                      {/* Action Buttons */}
-                      <div className="flex flex-col items-end space-y-2 sm:space-y-3">
-                        <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-500">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleLike(activity.id); }}
-                            className="flex items-center space-x-1 hover:text-red-500 transition-colors"
-                          >
-                            <Heart className="h-4 w-4" />
-                            <span>{activity.likes}</span>
-                          </button>
-                          <div className="flex items-center space-x-1">
-                            <MessageCircle className="h-4 w-4" />
-                            <span>{activity.reviews}</span>
-                          </div>
-                        </div>
-                        <div className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-500">
-                          {activity.createdAt}
-                        </div>
-                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleAddActivity(activity)}
+                        className="bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-teal-600 transition-all flex items-center space-x-2 shadow-lg"
+                      >
+                        {isStandalone ? (
+                          <>
+                            <Plus className="h-4 w-4" />
+                            <span>Plan</span>
+                          </>
+                        ) : stop?.activities?.includes(activity.id) ? (
+                          <span>Added</span>
+                        ) : (
+                          <>
+                            <Plus className="h-4 w-4" />
+                            <span>Add</span>
+                          </>
+                        )}
+                      </motion.button>
                     </div>
                   </div>
                 </div>
@@ -640,15 +449,15 @@ const ActivitySearch = () => {
 
         {/* No Results State */}
         {filteredActivities.length === 0 && (
-          <motion.div variants={itemVariants} className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl p-8 sm:p-16 text-center border border-gray-200 dark:border-gray-700 shadow-lg transition-colors duration-500">
-            <div className="text-gray-400 text-4xl sm:text-6xl mb-4 sm:mb-6">🎯</div>
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 transition-colors duration-500">No activities found</h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 max-w-md mx-auto transition-colors duration-500 text-sm sm:text-base">
+          <motion.div variants={itemVariants} className="bg-white rounded-3xl p-16 text-center border border-gray-200 shadow-lg">
+            <div className="text-gray-400 text-8xl mb-6">🔍</div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">No activities found</h3>
+            <p className="text-gray-600 mb-8 max-w-md mx-auto">
               Try adjusting your search criteria or filters to find more activities
             </p>
             <button 
               onClick={clearFilters}
-              className="bg-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-purple-700 transition-colors text-sm sm:text-base"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors"
             >
               Clear All Filters
             </button>

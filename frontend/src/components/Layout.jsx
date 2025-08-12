@@ -33,7 +33,8 @@ const Layout = ({ children, title, showBack = false, backTo = '/' }) => {
 
   const navigationItems = [
     { name: 'Dashboard', path: '/', icon: Home },
-    { name: 'My Trips', path: '/my-trips', icon: Calendar },
+    { name: 'My Trips', path: '/my-trips', icon: MapPin },
+    { name: 'Calendar', path: '/trip/1/calendar', icon: Calendar },
     { name: 'Create Trip', path: '/create-trip', icon: Plus },
     { name: 'Activity Search', path: '/activity-search', icon: Search },
     { name: 'Community', path: '/community', icon: Globe },

@@ -119,14 +119,13 @@ const ItineraryBuilder = () => {
             </div>
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-2" />
-              <span>{trip.stops?.length || 0} stops</span>
-              {/* Fix: Safely access stops length */}
+              {/* FIX: Safely access the length of the stops array */}
               <span>{trip.stops?.length || 0} stops</span>
             </div>
             <div className="flex items-center">
               <DollarSign className="h-4 w-4 mr-2" />
-              {/* Fix: Safely access budget */}
-              <span>${trip.budget?.total || 0} budget</span>
+              {/* FIX: Safely access the budget total, checking for different possible structures */}
+              <span>${(trip.budget?.total || trip.budget?.amount) || 0} budget</span>
             </div>
           </div>
         </motion.div>
@@ -175,7 +174,7 @@ const ItineraryBuilder = () => {
 
         {/* Trip Stops */}
         <div className="space-y-6">
-          {/* Fix: Check for stops before mapping */}
+          {/* FIX: Check if trip.stops exists and has items before trying to map over it */}
           {trip.stops && trip.stops.length > 0 ? (
             trip.stops.map((stop, index) => {
               const city = getStopCity(stop.cityId);

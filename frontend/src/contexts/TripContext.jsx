@@ -17,7 +17,6 @@ export const TripProvider = ({ children }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Fetch trips from the backend when the user is logged in
     const fetchTrips = async () => {
       if (user) {
         setLoading(true);
@@ -27,51 +26,45 @@ export const TripProvider = ({ children }) => {
         }
         setLoading(false);
       } else {
-        // Clear trips if user logs out
         setTrips([]);
         setLoading(false);
       }
     };
     fetchTrips();
-  }, [user]); // Re-run when the user object changes
+  }, [user]);
 
   const createTrip = async (tripData) => {
     const result = await tripService.createTrip(tripData);
     if (result.success) {
-      // Add the new trip to the local state
       setTrips(prevTrips => [...prevTrips, result.data.trip]);
       return result.data.trip;
     } else {
-      // Handle error case
       console.error(result.error);
       throw new Error(result.error);
     }
   };
 
-  // The rest of the functions (updateTrip, deleteTrip, etc.) would also be
-  // updated to use the tripService. For now, we focus on create and fetch.
-
-  const getTripById = (tripId) => {
-    return trips.find(trip => trip.id.toString() === tripId);
+  const addTrip = (newTrip) => {
+    setTrips(prevTrips => [...prevTrips, newTrip]);
   };
 
-  //to add the stop to the create trip page
+  const getTripById = (tripId) => {
+    return trips.find(trip => trip.id.toString() === tripId.toString());
+  };
+
   const addStopToTrip = (tripId, stop) => {
-  setTrips(prevTrips =>
-    prevTrips.map(trip =>
-      String(trip.id) === String(tripId)
-        ? {
-            ...trip,
-            stops: [...(trip.stops || []), { id: Date.now().toString(), ...stop }]
-          }
-        : trip
+    setTrips(prevTrips =>
+      prevTrips.map(trip =>
+        String(trip.id) === String(tripId)
+          ? {
+              ...trip,
+              stops: [...(trip.stops || []), { id: Date.now().toString(), ...stop }]
+            }
+          : trip
       )
     );
   };
-
-
   
-  // This can remain as is for now
   const getTripByShareId = (shareId) => {
     return trips.find(trip => trip.shareId === shareId);
   };
@@ -90,11 +83,11 @@ export const TripProvider = ({ children }) => {
     cities,
     activities,
     createTrip,
+    addTrip, // <-- Expose the new function
     addStopToTrip,
     getTripById,
     getTripByShareId,
     searchCities,
-    // Add other functions as you implement them
   };
 
   return (

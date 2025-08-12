@@ -40,73 +40,45 @@ export const AuthProvider = ({ children }) => {
   }, [checkAuthStatus]);
 
   const login = async (email, password) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const result = await authService.login(email, password);
-      if (result.success) {
-        setUser(result.data.user);
-        return { success: true };
-      }
+    setLoading(true);
+    setError(null);
+    const result = await authService.login(email, password);
+    if (result.success) {
+      setUser(result.data.user);
+    } else {
       setError(result.error);
-      return { success: false, error: result.error };
-    } catch (error) {
-      setError(error.message);
-      return { success: false, error: error.message };
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
+    return result;
   };
 
   const signup = async (userData) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const result = await authService.register(userData);
-      if (result.success) {
-        setUser(result.data.user);
-        return { success: true };
-      }
+     setLoading(true);
+    setError(null);
+    const result = await authService.register(userData);
+    if (result.success) {
+      setUser(result.data.user);
+    } else {
       setError(result.error);
-      return { success: false, error: result.error };
-    } catch (error) {
-      setError(error.message);
-      return { success: false, error: error.message };
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
+    return result;
   };
 
   const logout = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      await authService.logout();
-      setUser(null);
-      return { success: true };
-    } catch (error) {
-      console.error('Logout failed:', error);
-      setError(error.message);
-      return { success: false };
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    setError(null);
+    await authService.logout();
+    setUser(null);
+    setLoading(false);
+    return { success: true };
   };
-
+  
   const refreshUser = useCallback(async () => {
     await checkAuthStatus();
   }, [checkAuthStatus]);
 
-  const value = {
-    user,
-    setUser,
-    login,
-    signup,
-    logout,
-    loading,
-    error,
-    refreshUser
-  };
+  const value = { user, setUser, login, signup, logout, loading, error, refreshUser };
 
   return (
     <AuthContext.Provider value={value}>
