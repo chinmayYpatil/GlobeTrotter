@@ -156,13 +156,13 @@ const BuildTripAI = () => {
                 onChange={(e) => handleInputChange('destination', e.target.value)}
                 className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               >
-                <option value="">Select a destination in Gujarat</option>
+                <option value="">Select your destination</option>
                 {[
-                  "Ahmedabad", "Amreli", "Anand", "Aravalli", "Banaskantha", "Bharuch", "Bhavnagar",
-                  "Botad", "Chhota Udepur", "Dahod", "Dang", "Devbhoomi Dwarka", "Gandhinagar",
-                  "Gir Somnath", "Jamnagar", "Junagadh", "Kheda", "Kutch", "Mahisagar", "Mehsana",
-                  "Morbi", "Narmada", "Navsari", "Panchmahal", "Patan", "Porbandar", "Rajkot",
-                  "Sabarkantha", "Surat", "Surendranagar", "Tapi", "Vadodara", "Valsad"
+                  "France", "Spain", "United States", "China", "Italy", "Turkey", "Mexico",
+                  "Thailand", "Germany", "United Kingdom", "India", "Japan", "Austria",
+                  "Malaysia", "Greece", "Russia", "Singapore", "South Korea", "Indonesia", "Canada",
+                  "Australia", "Portugal", "Netherlands", "United Arab Emirates (UAE)", "Poland", "Switzerland", "Hungary",
+                  "Egypt", "Vietnam", "Brazil", "Israel", "Saudi Arabia", "Sweden", "New Zealand", "South Africa", "Ireland", "Belgium"
                 ].map(city => <option key={city} value={city}>{city}</option>)}
               </select>
             </div>
